@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import SessionWrapper from "@/components/SessionWrapper";
+import QueryClientContainer from "./_components/QueryClientProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
   description: "Bill splitting application",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,15 +28,17 @@ export default function RootLayout({
 }>) {
   return (
     <SessionWrapper>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <main>
-          {children}
-          </main>
-      </body>
-      </html>
+      <QueryClientContainer>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            <main>
+              {children}
+            </main>
+          </body>
+        </html>
+      </QueryClientContainer>
     </SessionWrapper>
   );
 }
