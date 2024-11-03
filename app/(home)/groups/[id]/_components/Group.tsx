@@ -1,3 +1,5 @@
+"use client"
+
 import { getGroupById } from "@/lib/actions/group"
 import { useSuspenseQuery } from "@tanstack/react-query"
 

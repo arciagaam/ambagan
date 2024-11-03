@@ -37,7 +37,7 @@ model UsersOnGroups {
 model Group {
   id            Int             @id @default(autoincrement())
   name          String
-  icon          String
+  icon          String?
   createdAt     DateTime        @default(now()) @db.Timestamptz(6)
   updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz(6)
   contributions Contribution[]
