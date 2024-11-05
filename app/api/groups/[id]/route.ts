@@ -5,7 +5,7 @@ import { updateGroupSchema } from "../../lib/schemas/groups";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: number } },
+  { params }: { params: { id: string } },
 ) {
   try {
     if (!params.id)
@@ -15,7 +15,7 @@ export async function GET(
       );
 
     const group = await prisma.group.findUnique({
-      where: { id: params.id },
+      where: { id: parseInt(params.id) },
       select: {
         id: true,
         icon: true,
@@ -39,7 +39,7 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: number } },
+  { params }: { params: { id: string } },
 ) {
   const requestBody = await request.json();
 
@@ -55,14 +55,14 @@ export async function PUT(
       );
 
     const group = await prisma.group.findUnique({
-      where: { id: params.id },
+      where: { id: parseInt(params.id) },
     });
 
     if (!group)
       return NextResponse.json({ error: "Group not found" }, { status: 404 });
 
     const updatedGroup = await prisma.group.update({
-      where: { id: params.id },
+      where: { id: parseInt(params.id) },
       data: {
         name: requestBody.name,
         icon: requestBody.icon,
