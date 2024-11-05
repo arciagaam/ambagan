@@ -5,21 +5,28 @@ import { updateGroupSchema } from "../../lib/schemas/groups";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  const { id } = await params;
   try {
-    if (!params.id)
+    if (!id)
       return NextResponse.json(
         { error: "Group ID is required" },
         { status: 400 },
       );
 
     const group = await prisma.group.findUnique({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
       select: {
         id: true,
-        icon: true,
         name: true,
+        contributions: {
+          select: {
+            id: true,
+            name: true,
+            contributionItems: true,
+          },
+        },
       },
     });
 
@@ -39,8 +46,9 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  const { id } = await params;
   const requestBody = await request.json();
 
   const response = await validateRequestBody(updateGroupSchema, requestBody);
@@ -48,21 +56,21 @@ export async function PUT(
   if (response) return response;
 
   try {
-    if (!params.id)
+    if (!id)
       return NextResponse.json(
         { error: "Group ID is required" },
         { status: 400 },
       );
 
     const group = await prisma.group.findUnique({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
     });
 
     if (!group)
       return NextResponse.json({ error: "Group not found" }, { status: 404 });
 
     const updatedGroup = await prisma.group.update({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
       data: {
         name: requestBody.name,
         icon: requestBody.icon,

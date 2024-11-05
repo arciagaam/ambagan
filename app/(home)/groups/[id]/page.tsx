@@ -5,8 +5,7 @@ export default async function Page(props: { params: Promise<{ id: number }> }) {
 
   return (
     <div className="w-full h-full">
-      <p>You are at: {params.id}</p>
       <Group id={params.id} />
     </div>
-  )
+  );
 }

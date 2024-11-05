@@ -1,35 +1,40 @@
-import { Group } from "@prisma/client"
-import { API_URL } from "../constants"
+import { Contribution, Group } from "@prisma/client";
+import { API_URL } from "../constants";
 
 export const getGroups = async (): Promise<Group[]> => {
-  const req = await fetch(`${API_URL}/groups`)
+  const req = await fetch(`${API_URL}/groups`);
   if (!req.ok) {
-    throw new Error(req.statusText)
+    throw new Error(req.statusText);
   }
-  const res = await req.json()
-  return res
-}
+  const res = await req.json();
+  return res;
+};
 
-export const getGroupById = async (id: number): Promise<Group> => {
-  const req = await fetch(`${API_URL}/groups/${id}`)
+export const getGroupById = async (
+  id: number,
+): Promise<Group & { contributions: Contribution[] }> => {
+  console.log("Group ID", id);
+  const req = await fetch(`${API_URL}/groups/${id}`);
   if (!req.ok) {
-    throw new Error(req.statusText)
+    throw new Error(req.statusText);
   }
-  const res = await req.json()
-  return res
-}
+  const res = await req.json();
+  return res;
+};
 
-export const addGroup = async (payload: Omit<Group, "id" | "createdAt" | "updatedAt">): Promise<Group> => {
+export const addGroup = async (
+  payload: Omit<Group, "id" | "createdAt" | "updatedAt">,
+): Promise<Group> => {
   const req = await fetch(`${API_URL}/groups`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(payload)
-  })
+    body: JSON.stringify(payload),
+  });
   if (!req.ok) {
-    throw new Error(req.statusText)
+    throw new Error(req.statusText);
   }
-  const res = await req.json()
-  return res
-}
+  const res = await req.json();
+  return res;
+};
