@@ -2,12 +2,16 @@
 
 import { getGroupById } from "@/lib/actions/group";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type GroupProps = {
   id: number;
 };
 
 export default function Group({ id }: GroupProps) {
+  const pathname = usePathname()
   const group = useSuspenseQuery({
     queryKey: ["groupById", id],
     queryFn: () => getGroupById(id),
@@ -21,9 +25,16 @@ export default function Group({ id }: GroupProps) {
         <p>Contributions</p>
         {group.data.contributions.map((contribution) => {
           return (
-            <div key={contribution.id}>
-              <p>{contribution.name}</p>
-            </div>
+            <Link
+              href={`${pathname}/contributions/${contribution.id}`}
+              key={contribution.id}
+            >
+              <Card>
+                <CardHeader>
+                  <CardTitle>{contribution.name}</CardTitle>
+                </CardHeader>
+              </Card>
+            </Link>
           );
         })}
       </div>

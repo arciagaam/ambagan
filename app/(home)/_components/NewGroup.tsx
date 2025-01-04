@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { HiOutlinePlus } from "react-icons/hi2";
 import { Card } from "@/components/ui/card";
 import {
@@ -10,7 +10,7 @@ import {
   DialogTrigger,
   DialogContent,
   DialogTitle,
-  DialogHeader
+  DialogHeader,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -24,21 +24,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const groupFormSchema = z.object({
-  name: z.string().min(1)
-})
+  name: z.string().min(1),
+});
 
 function GroupForm() {
   const form = useForm<z.infer<typeof groupFormSchema>>({
     resolver: zodResolver(groupFormSchema),
     defaultValues: {
-      name: ""
-    }
-  })
+      name: "",
+    },
+  });
 
   const onSubmit = (values: z.infer<typeof groupFormSchema>) => {
     // Save to database...
-    console.log(values)
-  }
+    console.log(values);
+  };
 
   return (
     <Form {...form}>
@@ -59,14 +59,14 @@ function GroupForm() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 }
 
 export function NewGroup() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Card className="flex justify-center items-center cursor-pointer" >
+        <Card className="flex justify-center items-center cursor-pointer">
           <div className="flex flex-col justify-center items-center">
             <HiOutlinePlus className="text-3xl" />
             <p>Add New Group</p>
@@ -80,5 +80,5 @@ export function NewGroup() {
         </DialogHeader>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
