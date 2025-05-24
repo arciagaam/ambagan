@@ -4,6 +4,10 @@
 
 /*
 @theme {
+  --font-red-hat-display: var(--red-hat-display);
+}
+
+@theme {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
 
