@@ -13,12 +13,12 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
 model User {
-  id            Int             @id @default(autoincrement())
+  id            String          @id @default(uuid())
   email         String          @unique
   first_name    String?
   last_name     String?
-  password      String?
   createdAt     DateTime        @default(now()) @db.Timestamptz(6)
   updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz(6)
   UsersOnGroups UsersOnGroups[]
@@ -26,7 +26,7 @@ model User {
 
 model UsersOnGroups {
   user       User     @relation(fields: [userId], references: [id])
-  userId     Int
+  userId     String
   group      Group    @relation(fields: [groupId], references: [id])
   groupId    Int
   assignedAt DateTime @default(now())
