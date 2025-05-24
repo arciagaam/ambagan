@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Red_Hat_Display } from 'next/font/google'
 import { Toaster } from 'react-hot-toast';
+import { createClient } from "@/utils/supabase/server";
 
 const redHatDisplay = Red_Hat_Display({
   subsets: ['latin'],
@@ -15,16 +16,24 @@ export const metadata: Metadata = {
   description: "Bill splitting application",
 };
 
-export default function RootLayout({
+
+export default async function RootLayout({
   children,
+  home
 }: Readonly<{
   children: React.ReactNode;
+  landing: React.ReactNode;
+  home: React.ReactNode;
 }>) {
+  const supabase = await createClient()
+  const { data } = await supabase.auth.getUser();
+  const { user } = data;
+
   return (
     <html lang="en">
       <body className={`${redHatDisplay.className} ${redHatDisplay.variable} antialiased font-red-hat-display`}>
         <main>
-          {children}
+          {user ? home : children}
           <Toaster />
         </main>
       </body>
