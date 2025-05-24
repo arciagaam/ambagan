@@ -1,13 +1,22 @@
-import { FormControl, FormField, FormItem, FormLabel, FormMessage, useFormField } from '@/components/ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { CreateContributionSchema } from '@/schemas/ContributionSchema'
 import React from 'react'
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form'
 import { z } from 'zod'
-import ContributorsList from './ContributorsList'
-import { ContributorsSelect } from './ContributorsSelect'
+import { Member } from '../types'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Button } from '@/components/ui/button'
+import { Command, CommandItem, CommandList } from '@/components/ui/command'
+import { CheckIcon } from 'lucide-react'
 
-export default function ContributionsItemsList() {
+type ContributionsItemsListProps = {
+    members: Member[]
+}
+
+export default function ContributionsItemsList({
+    members
+}: ContributionsItemsListProps) {
     const form = useFormContext<z.infer<typeof CreateContributionSchema>>()
 
     const { fields, append, remove } = useFieldArray({
@@ -15,69 +24,128 @@ export default function ContributionsItemsList() {
         name: 'contributionItems'
     })
 
-    const users = [
-        { id: 'u1', name: 'Alice' },
-        { id: 'u2', name: 'Bob' },
-        { id: 'u3', name: 'Charlie' }
-    ]
-
     return (
         <div className="flex flex-col">
             <h2>Ambagan Breakdown</h2>
-
             <div className="flex flex-col">
                 {
-                    fields.map((item, index) => (
-                        <div key={item.id} className="flex">
-                            <FormField
-                                control={form.control}
-                                name={`contributionItems.${index}.name`}
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Name</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} />
-                                        </FormControl>
+                    fields.length ? fields.map((item, index) => {
+                        return (
+                            <div key={item.id} className="flex">
+                                <FormField
+                                    control={form.control}
+                                    name={`contributionItems.${index}.name`}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Name</FormLabel>
+                                            <FormControl>
+                                                <Input {...field} />
+                                            </FormControl>
 
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
-                            <FormField
-                                control={form.control}
-                                name={`contributionItems.${index}.amount`}
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Amount</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} />
-                                        </FormControl>
+                                <FormField
+                                    control={form.control}
+                                    name={`contributionItems.${index}.amount`}
+                                    render={({ field }) => {
+                                        return (
+                                            <FormItem>
+                                                <FormLabel>Amount</FormLabel>
+                                                <FormControl>
+                                                    <Input {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )
+                                    }}
+                                />
 
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <Controller
-                                control={form.control}
-                                name={`contributionItems.${index}.contributors`}
-                                render={({ field }) => (
-                                    <div className=' space-y-2'>
-                                        <FormLabel>Amount</FormLabel>
-                                        <ContributorsSelect
-                                            selected={field.value}
-                                            onChange={field.onChange}
-                                            users={users}   
-                                        />
-                                    </div>
-                                )}
-                            />
-
-                        </div>
-                    ))
+                                <Controller
+                                    control={form.control}
+                                    name={`contributionItems.${index}.contributors`}
+                                    render={({ field }) => {
+                                        // const selected = field.value.map((value) => value.id)
+                                        console.log({ field: field.value })
+                                        return (
+                                            <div>
+                                                <FormLabel>Contributors</FormLabel>
+                                                <ContributorsSelect
+                                                    options={members}
+                                                    selected={field.value}
+                                                    onChange={field.onChange}
+                                                />
+                                            </div>
+                                        )
+                                    }}
+                                />
+                            </div>
+                        )
+                    }) : null
                 }
             </div>
         </div>
+    )
+}
+
+
+type ContributorsSelect<T extends Member = Member, K = Pick<T, "id">> = {
+    options: T[]
+    selected: K[]
+    onChange: (...event: any[]) => void
+}
+
+export const ContributorsSelect = ({
+    options,
+    selected,
+    onChange,
+}: ContributorsSelect) => {
+    const toggleValue = (id: string) => {
+        const isIncluded = selected.some((member) => member.id === id)
+        if (isIncluded) {
+            onChange(selected.filter((member) => member.id !== id))
+        } else {
+            onChange([
+                ...selected, {
+                    id,
+                    amount: 0
+                }
+            ])
+        }
+    }
+
+    const selectedOptions = options.filter((option) => selected.some((member) => option.id === member.id))
+
+    return (
+        <Popover>
+            <PopoverTrigger asChild>
+                <Button variant="outline" className="w-full justify-start">
+                    {selected.length === 0
+                        ? "Select Contributors"
+                        : selectedOptions
+                            .map(option => option.first_name)
+                            .join(', ')
+                    }
+                </Button>
+            </PopoverTrigger>
+            <PopoverContent className="p-0 w-[300px]">
+                <Command>
+                    <CommandList>
+                        {options.map((option) => (
+                            <CommandItem
+                                key={option.id}
+                                onSelect={() => toggleValue(option.id)}
+                                className="flex items-center justify-between"
+                            >
+                                {option.first_name}
+                                {selected.some((u) => u.id === option.id) && <CheckIcon className="w-4 h-4" />}
+                            </CommandItem>
+                        ))}
+                    </CommandList>
+                </Command>
+            </PopoverContent>
+        </Popover>
     )
 }

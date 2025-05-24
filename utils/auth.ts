@@ -1,11 +1,18 @@
+import prisma from "@/prisma/prisma";
 import { createClient } from "./supabase/server"
 
 export const getAuthUser = async () => {
     const supabase = await createClient();
+    const result = await supabase.auth.getUser();
 
-    const data = await supabase.auth.getUser();
+    if (!result.data.user || !result) return null
+    const id = result.data.user.id
 
-    if(!data.data.user || !data) return null
+    const user = await prisma.user.findUnique({
+        where: {
+            id: id
+        }
+    })
 
-    return data.data.user
+    return user
 }
