@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Red_Hat_Display } from 'next/font/google'
 import { Toaster } from 'react-hot-toast';
 
@@ -26,7 +25,6 @@ export default function RootLayout({
       <body className={`${redHatDisplay.className} ${redHatDisplay.variable} antialiased font-red-hat-display`}>
         <main>
           {children}
-          <ReactQueryDevtools initialIsOpen={false} />
           <Toaster />
         </main>
       </body>

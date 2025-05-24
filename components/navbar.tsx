@@ -97,7 +97,7 @@ const Navbar = ({
       <div className="block lg:hidden">
         <div className="flex items-center justify-between">
           <a href={logo.url} className="flex items-center gap-2">
-            <img src={logo.src} className="max-h-8" alt={logo.alt} />
+            {/* <img src={logo.src} className="max-h-8" alt={logo.alt} /> */}
           </a>
           <Sheet>
             <SheetTrigger asChild>
@@ -109,7 +109,7 @@ const Navbar = ({
               <SheetHeader>
                 <SheetTitle>
                   <a href={logo.url} className="flex items-center gap-2">
-                    <img src={logo.src} className="max-h-8" alt={logo.alt} />
+                    {/* <img src={logo.src} className="max-h-8" alt={logo.alt} /> */}
                   </a>
                 </SheetTitle>
               </SheetHeader>
