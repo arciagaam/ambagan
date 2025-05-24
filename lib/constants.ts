@@ -11,4 +11,8 @@ export const HttpErrors = {
   504: 'Gateway Timeout',
 } as const;
 
+export const Url = {
+  getStarted: '/get-started',
+}
+
 export type HttpErrorCode = keyof typeof HttpErrors;
