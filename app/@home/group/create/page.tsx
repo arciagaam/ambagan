@@ -25,7 +25,7 @@ export default function CreateGroup() {
     const onSubmit = async (values: z.infer<typeof CreateGroupSchema>) => {
         const res = await createGroup(values);
         
-
+        console.log(res)
         if(res?.status) {
             toast.success('Group created')
             redirect(`/group/${res.group?.id}`)
