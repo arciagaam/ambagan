@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import SessionWrapper from "@/components/SessionWrapper";
 import QueryClientContainer from "./_components/QueryClientProvider";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
@@ -28,12 +27,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SessionWrapper>
       <QueryClientContainer>
         <html lang="en">
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          >
+          <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
             <main>
               {children}
               <ReactQueryDevtools initialIsOpen={false} />
@@ -41,6 +37,5 @@ export default function RootLayout({
           </body>
         </html>
       </QueryClientContainer>
-    </SessionWrapper>
   );
 }
