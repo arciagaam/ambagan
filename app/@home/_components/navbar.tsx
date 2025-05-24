@@ -18,7 +18,7 @@ export default function Navbar() {
                     <Button><Menu /></Button>
                 </SheetTrigger>
                 <SheetContent className='p-4 w-full flex flex-col'>
-
+                    <SheetTitle className='sr-only'>Menu Bar</SheetTitle>
                     <Button onClick={signout} className='mt-auto'>
                         Logout
                     </Button>

@@ -10,6 +10,8 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { createGroup } from './actions'
+import toast from 'react-hot-toast'
+import { redirect } from 'next/navigation'
 
 export default function CreateGroup() {
 
@@ -20,14 +22,19 @@ export default function CreateGroup() {
         }
     })
 
-    const onSubmit = (values: z.infer<typeof CreateGroupSchema>) => {
-        const res = createGroup(values);
+    const onSubmit = async (values: z.infer<typeof CreateGroupSchema>) => {
+        const res = await createGroup(values);
         
+
+        if(res?.status) {
+            toast.success('Group created')
+            redirect(`/group/${res.group?.id}`)
+        }
     }
 
     return (
         <Form {...createGroupForm}>
-            <form onSubmit={createGroupForm.handleSubmit(onSubmit)} className='flex-1 flex flex-col'>
+            <form onSubmit={createGroupForm.handleSubmit(onSubmit)} className='flex-1 flex flex-col p-4'>
                 <FormField
                     control={createGroupForm.control}
                     name="name"
@@ -53,7 +60,10 @@ export default function CreateGroup() {
 
 
                     <div className="flex w-full gap-2">
-                        <Button type='button' variant={'destructive'} className='w-full'>Cancel</Button>
+                        <Link href={'..'} rel='path' className='w-full'>
+                            <Button type='button' variant={'destructive'} className='w-full'>Cancel</Button>
+                        </Link>
+
                         <Button className='w-full'>Create Group</Button>
                     </div>
 

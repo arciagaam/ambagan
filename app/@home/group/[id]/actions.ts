@@ -6,7 +6,11 @@ export async function getGroup(id: string) {
             id: id
         },
         include: {
-            UsersOnGroups: true
+            UsersOnGroups: {
+                include: {
+                    user: true,
+                }
+            }
         }
     })
 }

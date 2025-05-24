@@ -50,7 +50,9 @@ export default function JoinGroup() {
                     </Link>
 
                     <div className="flex w-full gap-2">
-                        <Button type='button' variant={'destructive'} className='w-full'>Cancel</Button>
+                        <Link href={'..'} rel='path' className='w-full'>
+                            <Button type='button' variant={'destructive'} className='w-full'>Cancel</Button>
+                        </Link>
                         <Button className='w-full'>Join Group</Button>
                     </div>
 
