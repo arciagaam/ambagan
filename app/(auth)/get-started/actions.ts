@@ -1,5 +1,8 @@
 'use server'
+import prisma from '@/prisma/prisma'
 import { createClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
+
 
 export async function login(formData: FormData) {
   const supabase = await createClient()
@@ -10,8 +13,6 @@ export async function login(formData: FormData) {
   }
 
   const res = await supabase.auth.signInWithPassword(data)
-
-  console.log('USER SIGNUP', res.data.user)
 
   if (res.error) {
     return { success: false, error: res.error.message }
@@ -31,16 +32,33 @@ export async function register(formData: FormData) {
     password: formData.get('password') as string,
   }
 
-  const res = await supabase.auth.signUp({
+  const signupUser = await supabase.auth.signUp({
     email: data.email,
     password: data.password
   })
 
-  console.log('USER SIGNUP', res.data.user)
 
-  if (res.error) {
-    return { success: false, error: res.error.message }
+  const newUser = signupUser.data.user
+
+  await prisma.user.create({
+    data: {
+      id: newUser!.id,
+      email: data.email,
+      first_name: data.firstName,
+      last_name: data.lastName
+    }
+  })
+
+  if (signupUser.error) {
+    return { success: false, error: signupUser.error.message }
   }
 
   return { success: true }
+}
+
+export async function signout() {
+  const supabase = await createClient()
+  supabase.auth.signOut()
+
+  redirect('/')
 }
