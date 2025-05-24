@@ -3,7 +3,24 @@
 import prisma from "@/prisma/prisma";
 import { CreateGroupSchema } from "@/schemas/GroupSchema";
 import { getAuthUser } from "@/utils/auth";
+import { generateSaltedCode } from "@/utils/utils";
 import { z } from "zod";
+import crypto from 'crypto'
+
+async function getInviteCode() {
+
+    const inviteCode = generateSaltedCode(crypto.randomUUID());
+
+    const inviteCodeCheck = await prisma.group.findFirst({
+        where: {
+            inviteCode: inviteCode
+        }
+    })
+
+    if (inviteCodeCheck) return await getInviteCode()
+
+    return inviteCode
+}
 
 export async function createGroup(formValues: z.infer<typeof CreateGroupSchema>) {
     const user = await getAuthUser();
@@ -12,9 +29,13 @@ export async function createGroup(formValues: z.infer<typeof CreateGroupSchema>)
 
     try {
 
+        const inviteCode = await getInviteCode()
+
         const res = await prisma.group.create({
             data: {
-                ...formValues, UsersOnGroups: {
+                ...formValues,
+                inviteCode: inviteCode,
+                UsersOnGroups: {
                     create: {
                         userId: user.id,
                         role: 'owner',
