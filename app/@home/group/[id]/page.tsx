@@ -1,20 +1,25 @@
 import React from 'react'
+import { notFound } from 'next/navigation'
 import { getGroup } from './actions'
 import InviteCode from './_components/InviteCode'
 import NoAmbagans from './_components/NoAmbagans'
-import { Button } from '@/components/ui/button'
-import { FaChevronLeft, FaCog } from 'react-icons/fa'
-import Link from 'next/link'
+import Ambagan from './_components/Ambagan'
 import BackButton from '@/components/back-button'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { FaCog } from 'react-icons/fa'
 
 type ViewGroupProps = {
-    params: {
+    params: Promise<{
         id: string
-    }
+    }>
 }
+
 export default async function ViewGroup({ params }: ViewGroupProps) {
     const { id } = await params
     const group = await getGroup(id);
+
+    if (!group) return notFound()
 
     return (
         <div className="flex flex-col">
@@ -32,11 +37,23 @@ export default async function ViewGroup({ params }: ViewGroupProps) {
 
             <InviteCode />
 
-            <div className="flex flex-col gap-2 p-4">
-                <h2 className='text-xl font-medium'>Ambagans</h2>
-                <NoAmbagans />
+            <div className="flex flex-col gap-2">
+                <h2>Ambagans</h2>
+                {
+                    group.contributions && group.contributions.length ? (
+                        group.contributions.map((contribution) => {
+                            return (
+                                <Ambagan
+                                    key={contribution.id}
+                                    contribution={contribution}
+                                />
+                            )
+                        })
+                    ) : (
+                        <NoAmbagans />
+                    )
+                }
             </div>
-
         </div>
     )
 }

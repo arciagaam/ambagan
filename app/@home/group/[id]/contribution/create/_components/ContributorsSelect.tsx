@@ -6,13 +6,13 @@ import { CheckIcon } from 'lucide-react'
 
 type User = {
   id: string
-  name: string
+  amount: number
 }
 
-interface ContributorsSelectProps {
-  selected: string[]
+interface ContributorsSelectProps<T extends User = User> {
+  selected: T[]
   onChange: (value: string[]) => void
-  users: User[]
+  users: T[]
   placeholder?: string
 }
 
@@ -37,9 +37,9 @@ export const ContributorsSelect: FC<ContributorsSelectProps> = ({
           {selected.length === 0
             ? placeholder
             : users
-                .filter((u) => selected.includes(u.id))
-                .map((u) => u.name)
-                .join(', ')}
+              .filter((u) => selected.includes(u.id))
+              .map((u) => u.name)
+              .join(', ')}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 w-[300px]">

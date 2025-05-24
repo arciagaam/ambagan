@@ -15,9 +15,11 @@ export default function NoAmbagans() {
             </div>
 
             <div className="flex flex-col gap-2 items-center">
-                <Link href={`${pathname}/contribution/create`} className='w-full'>
-                    <Button className='w-full'>Create Ambagan</Button>
-                </Link>
+                <Button className='w-full'>
+                    <Link href={`${pathname}/contribution/create`} className='w-full'>
+                        Create Ambagan
+                    </Link>
+                </Button>
             </div>
         </div>
     )
