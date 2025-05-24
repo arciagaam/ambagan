@@ -56,9 +56,9 @@ export default function Login() {
                     </Button>
 
                     <div className="flex items-center gap-2">
-                        <div className="min-h-[1px] w-full border-[.5px] border-[#e5e5e5]"></div>
+                        <div className="min-h-px w-full border-[.5px] border-[#e5e5e5]"></div>
                         or
-                        <div className="min-h-[1px] w-full border-[.5px] border-[#e5e5e5]"></div>
+                        <div className="min-h-px w-full border-[.5px] border-[#e5e5e5]"></div>
                     </div>
 
                     <FormProvider {...loginForm}>
