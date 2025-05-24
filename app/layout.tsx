@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import QueryClientContainer from "../components/QueryClientProvider";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Red_Hat_Display } from 'next/font/google'
 import { Toaster } from 'react-hot-toast';
