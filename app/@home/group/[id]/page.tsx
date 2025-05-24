@@ -37,7 +37,7 @@ export default async function ViewGroup({ params }: ViewGroupProps) {
 
             <InviteCode />
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 p-4">
                 <h2>Ambagans</h2>
                 {
                     group.contributions && group.contributions.length ? (

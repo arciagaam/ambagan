@@ -21,6 +21,8 @@ export default async function ManageGroup({ params }: ManageGroupProps) {
     const { id } = await params
     const group = await getGroup(id);
 
+    console.log(group)
+
     if (!group) return notFound();
     return (
         <div className="flex flex-col">
