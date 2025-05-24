@@ -2,9 +2,10 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage, useFormField 
 import { Input } from '@/components/ui/input'
 import { CreateContributionSchema } from '@/schemas/ContributionSchema'
 import React from 'react'
-import { useFieldArray, useFormContext } from 'react-hook-form'
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form'
 import { z } from 'zod'
 import ContributorsList from './ContributorsList'
+import { ContributorsSelect } from './ContributorsSelect'
 
 export default function ContributionsItemsList() {
     const form = useFormContext<z.infer<typeof CreateContributionSchema>>()
@@ -13,6 +14,12 @@ export default function ContributionsItemsList() {
         control: form.control,
         name: 'contributionItems'
     })
+
+    const users = [
+        { id: 'u1', name: 'Alice' },
+        { id: 'u2', name: 'Bob' },
+        { id: 'u3', name: 'Charlie' }
+    ]
 
     return (
         <div className="flex flex-col">
@@ -52,8 +59,21 @@ export default function ContributionsItemsList() {
                                 )}
                             />
 
-                            <ContributorsList index={index}/>
-                            
+                            <Controller
+                                control={form.control}
+                                name={`contributionItems.${index}.contributors`}
+                                render={({ field }) => (
+                                    <div className=' space-y-2'>
+                                        <FormLabel>Amount</FormLabel>
+                                        <ContributorsSelect
+                                            selected={field.value}
+                                            onChange={field.onChange}
+                                            users={users}   
+                                        />
+                                    </div>
+                                )}
+                            />
+
                         </div>
                     ))
                 }
