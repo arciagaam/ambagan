@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Red_Hat_Display } from 'next/font/google'
+import { Toaster } from 'react-hot-toast';
 
 const redHatDisplay = Red_Hat_Display({
   subsets: ['latin'],
@@ -21,9 +23,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${redHatDisplay.className} ${redHatDisplay.variable} antialiased font-red-hat-display text-base`}>
+      <body className={`${redHatDisplay.className} ${redHatDisplay.variable} antialiased font-red-hat-display`}>
         <main>
           {children}
+          <ReactQueryDevtools initialIsOpen={false} />
+          <Toaster />
         </main>
       </body>
     </html>
