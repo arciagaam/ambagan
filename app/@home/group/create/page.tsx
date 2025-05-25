@@ -13,6 +13,7 @@ import toast from 'react-hot-toast'
 import { redirect, useRouter } from 'next/navigation'
 import { asyncFetch } from '@/lib/asyncFetch'
 import { Group } from '@prisma/client'
+import { APIError } from '@/lib/apiErrorHandler'
 
 export default function CreateGroup() {
     const router = useRouter()
@@ -29,8 +30,8 @@ export default function CreateGroup() {
             const res = await asyncFetch.post('/api/group', values) as { data: Group }
             router.push(`/group/${res.data.id}`)
             router.refresh()
-        } catch (error: any) {
-            toast.error(error.message || 'Something went wrong. Try again later')
+        } catch (error: unknown) {
+            toast.error((error as APIError).message)
         }
     }
 

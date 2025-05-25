@@ -7,10 +7,11 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { redirect, useRouter } from 'next/navigation'
+import {  useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { RegisterSchema } from '@/schemas/AuthSchema'
 import { asyncFetch } from '@/lib/asyncFetch'
+import { APIError } from '@/lib/apiErrorHandler'
 
 export default function RegisterForm() {
 
@@ -33,8 +34,8 @@ export default function RegisterForm() {
       toast.success('Registered successfully')
       router.push('/')
       router.refresh()
-    } catch (error: any) {
-      toast.error(error.message)
+    } catch (error: unknown) {
+      toast.error((error as APIError).message)
     }
   }
 

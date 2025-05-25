@@ -1,8 +1,8 @@
 'use client'
 
-import { signout } from '@/app/(auth)/get-started/actions'
 import { Button } from '@/components/ui/button'
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { APIError } from '@/lib/apiErrorHandler'
 import { asyncFetch } from '@/lib/asyncFetch'
 import { Menu } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -18,8 +18,8 @@ export default function Navbar() {
             await asyncFetch.get('/api/auth/signout');
             router.push('/')
             router.refresh()
-        } catch (error: any) {
-            toast.error('Something went wrong: ', error.message)
+        } catch (error: unknown) {
+            toast.error((error as APIError).message)
         }
     }
     return (

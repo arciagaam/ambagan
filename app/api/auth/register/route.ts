@@ -18,7 +18,6 @@ export const POST = apiHandler(async (req: Request) => {
         password: password,
     })
 
-    console.log(signupUser)
     if (signupUser.error) throw new Error(signupUser.error.message);
 
     const newUser = signupUser.data.user

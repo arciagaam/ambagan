@@ -11,6 +11,13 @@ export const getAuthUser = async () => {
     const user = await prisma.user.findUnique({
         where: {
             id: id
+        },
+        include: {
+            UsersOnGroups: {
+                include: {
+                    user: true
+                }
+            }
         }
     })
 

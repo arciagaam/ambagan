@@ -8,7 +8,7 @@ export default function ManageGroupMembers({ members }: { members: any }) {
 
     const [memberFilterValue, setMemberFilterValue] = useState('')
 
-    const filteredMembers = memberFilterValue ? members.filter((member: any) => `${member.user.first_name.toLowerCase()} ${member.user.middle_name?.toLowerCase()} ${member.user.last_name.toLowerCase()}`.includes(memberFilterValue)) : members
+    const filteredMembers = memberFilterValue ? members.filter((member: any) => `${member.user.first_name.toLowerCase()} ${member.user.middle_name?.toLowerCase()} ${member.user.last_name.toLowerCase()}`.includes(memberFilterValue.toLocaleLowerCase())) : members
 
     return (
         <div className="flex flex-col p-4 gap-4 bg-white rounded-2xl border border-border shadow">

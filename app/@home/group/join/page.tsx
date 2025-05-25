@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { APIError } from '@/lib/apiErrorHandler'
 import { asyncFetch } from '@/lib/asyncFetch'
 import { joinGroupSchema } from '@/schemas/GroupSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -28,12 +29,11 @@ export default function JoinGroup() {
     const onSubmit = async (values: z.infer<typeof joinGroupSchema>) => {
         try {
             const res = await asyncFetch.get(`/api/group/join?invite=${values.inviteCode}`) as { message: string, group: Group }
-            console.log(res)
             toast(res.message)
             router.push(`/group/${res.group.id}`)
             router.refresh()
-        } catch (error: any) {
-            toast(error.message)
+        } catch (error: unknown) {
+            toast((error as APIError).message)
         }
     }
 

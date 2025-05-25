@@ -5,6 +5,7 @@ import ManageGroupMembers from './_components/ManageGroupMembers'
 import ManageGroupName from './_components/ManageGroupName'
 import DeleteGroup from './_components/DeleteGroup'
 import prisma from '@/prisma/prisma'
+import { getAuthUser } from '@/utils/auth'
 
 type ManageGroupProps = {
     params: {
@@ -14,6 +15,8 @@ type ManageGroupProps = {
 
 export default async function ManageGroup({ params }: ManageGroupProps) {
     const { id } = await params
+    const user = await getAuthUser()
+
     const group = await prisma.group.findFirst({
         where: {
             id: id
@@ -30,6 +33,8 @@ export default async function ManageGroup({ params }: ManageGroupProps) {
 
     if (!group) return notFound()
 
+    const isOwner = user?.UsersOnGroups?.find(userOnGroup => userOnGroup.groupId == group.id)?.role == 'owner'
+
     return (
         <div className="flex flex-col">
             <div className="flex px-4 py-6 items-center gap-2">
@@ -39,9 +44,11 @@ export default async function ManageGroup({ params }: ManageGroupProps) {
 
 
             <div className="flex flex-col gap-4 p-4 pt-0">
-                <ManageGroupName group={group} />
+                <ManageGroupName group={group} isOwner={isOwner} />
                 <ManageGroupMembers members={group.UsersOnGroups} />
-                <DeleteGroup />
+                {
+                    isOwner && <DeleteGroup />
+                }
             </div>
         </div>
     )
