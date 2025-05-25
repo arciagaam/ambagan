@@ -15,7 +15,7 @@ export default function ManageGroupMembers({ members }: { members: any }) {
             <h2>Members</h2>
             <Input placeholder='Find a member' value={memberFilterValue} onChange={(e) => setMemberFilterValue(e.target.value)} />
 
-            <div className="flex flex-col agp-2">
+            <div className="flex flex-col gap-2">
                 {
                     filteredMembers.map((member: any, index: number) => (
                         <div key={index} className="flex items-start gap-2">

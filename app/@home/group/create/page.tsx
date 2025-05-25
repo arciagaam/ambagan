@@ -9,11 +9,13 @@ import Link from 'next/link'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { createGroup } from './actions'
 import toast from 'react-hot-toast'
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
+import { asyncFetch } from '@/lib/asyncFetch'
+import { Group } from '@prisma/client'
 
 export default function CreateGroup() {
+    const router = useRouter()
 
     const createGroupForm = useForm<z.infer<typeof CreateGroupSchema>>({
         resolver: zodResolver(CreateGroupSchema),
@@ -23,12 +25,12 @@ export default function CreateGroup() {
     })
 
     const onSubmit = async (values: z.infer<typeof CreateGroupSchema>) => {
-        const res = await createGroup(values);
-        
-        console.log(res)
-        if(res?.status) {
-            toast.success('Group created')
-            redirect(`/group/${res.group?.id}`)
+        try {
+            const res = await asyncFetch.post('/api/group', values) as { data: Group }
+            router.push(`/group/${res.data.id}`)
+            router.refresh()
+        } catch (error: any) {
+            toast.error(error.message || 'Something went wrong. Try again later')
         }
     }
 

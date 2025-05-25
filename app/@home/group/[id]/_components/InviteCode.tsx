@@ -1,13 +1,12 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import React from 'react'
 import toast from 'react-hot-toast'
 import { FaCopy } from 'react-icons/fa'
 
-export default function InviteCode() {
+export default function InviteCode({inviteCode}: {inviteCode: string}) {
 
     const copyInviteLink = () => {
         navigator.clipboard.writeText('AljcvaS8@UH') //change to db group invite code
@@ -18,7 +17,7 @@ export default function InviteCode() {
 
             <div className="flex flex-col gap-1 w-full">
                 <Label>Invite Code</Label>
-                <p className='font-bold'>AljcvaS8</p>
+                <p className='font-bold'>{inviteCode}</p>
             </div>
             <Button variant={'outline'} onClick={copyInviteLink} className='w-fit flex items-center gap-2'>
                 <FaCopy/>

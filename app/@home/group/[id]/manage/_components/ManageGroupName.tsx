@@ -3,9 +3,9 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { asyncFetch } from '@/lib/asyncFetch'
 import { Group } from '@prisma/client'
 import React, { useState } from 'react'
-import { renameGroup } from '../actions'
 import toast from 'react-hot-toast'
 
 export default function ManageGroupName({ group }: { group: Group }) {
@@ -13,14 +13,14 @@ export default function ManageGroupName({ group }: { group: Group }) {
     const [groupName, setGroupName] = useState(group.name)
 
     const handleRenameGroup = async () => {
-        const res = await renameGroup(groupName, group.id)
-
-        if(res.status) {
+        try {
+            await asyncFetch.put('/api/group/rename', { id: group.id, name: groupName })
             toast.success('Group renamed')
-            return
+        } catch (error: any) {
+            toast.error(error.message)
         }
+        
 
-        toast.error('Something went wrong')
     }
     return (
         <div className="flex flex-col p-4 gap-4 bg-white rounded-2xl border border-border shadow">

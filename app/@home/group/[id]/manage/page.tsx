@@ -1,15 +1,10 @@
 import BackButton from '@/components/back-button'
-import { notFound, useParams } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import React from 'react'
-import { getGroup } from '../actions'
-import { Input } from '@/components/ui/input'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import ManageGroupMembers from './_components/ManageGroupMembers'
-import { renameGroup } from './actions'
 import ManageGroupName from './_components/ManageGroupName'
 import DeleteGroup from './_components/DeleteGroup'
+import prisma from '@/prisma/prisma'
 
 type ManageGroupProps = {
     params: {
@@ -19,11 +14,22 @@ type ManageGroupProps = {
 
 export default async function ManageGroup({ params }: ManageGroupProps) {
     const { id } = await params
-    const group = await getGroup(id);
+    const group = await prisma.group.findFirst({
+        where: {
+            id: id
+        },
+        include: {
+            UsersOnGroups: {
+                include: {
+                    user: true
+                }
+            },
+            contributions: true,
+        }
+    })
 
-    console.log(group)
+    if (!group) return notFound()
 
-    if (!group) return notFound();
     return (
         <div className="flex flex-col">
             <div className="flex px-4 py-6 items-center gap-2">
