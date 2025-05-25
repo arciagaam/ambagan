@@ -4,18 +4,33 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { CreateContributionSchema } from '@/schemas/ContributionSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { User } from '@prisma/client'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import ContributionsItemsList from './ContributionsItemsList'
+import { formatDateHumanReadable } from '@/lib/utils'
+import { notFound, useParams } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { Member } from '../types'
 
-export default function CreateContributionForm({ user }: { user: any }) {
+type CreateContributionFormProps = {
+    ownerId: string
+    members: Member[]
+}
+
+export default function CreateContributionForm({
+    ownerId,
+    members
+}: CreateContributionFormProps) {
+    const { id } = useParams()
+
+    if (!id) return notFound()
+
     const createContributionForm = useForm<z.infer<typeof CreateContributionSchema>>({
         resolver: zodResolver(CreateContributionSchema),
         defaultValues: {
             name: '',
-            ownerId: user.id,
+            ownerId: ownerId,
             contributionItems: [{
                 name: '',
                 amount: '0',
@@ -24,8 +39,7 @@ export default function CreateContributionForm({ user }: { user: any }) {
         }
     })
 
-    const onSubmit = (values: z.infer<typeof CreateContributionSchema>) => {
-    }
+    const onSubmit = (values: z.infer<typeof CreateContributionSchema>) => console.log(values)
 
     return (
         <Form {...createContributionForm}>
@@ -35,21 +49,17 @@ export default function CreateContributionForm({ user }: { user: any }) {
                     name="name"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Ambagan Name</FormLabel>
+                            <FormLabel>Name</FormLabel>
                             <FormControl>
-                                <Input {...field} autoComplete='email' />
+                                <Input {...field} />
                             </FormControl>
-
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-
-                <p>add date here</p>
-
-                <ContributionsItemsList />
-
-                
+                <p>{formatDateHumanReadable(new Date())}</p>
+                <ContributionsItemsList members={members} />
+                <Button className='w-full'>Create Ambagan</Button>
             </form>
         </Form>
     )

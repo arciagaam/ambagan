@@ -7,12 +7,14 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { login } from '../actions'
-import { redirect } from 'next/navigation'
+import {  useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { LoginSchema } from '@/schemas/AuthSchema'
+import { asyncFetch } from '@/lib/asyncFetch'
+import { APIError } from '@/lib/apiErrorHandler'
 
 export default function LoginForm() {
+    const router = useRouter()
 
     const registerForm = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
@@ -23,17 +25,14 @@ export default function LoginForm() {
     })
 
     const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
-        const formData = new FormData();
-
-        for (const key in values) {
-            formData.set(key, values[key as keyof typeof values])
-        }
-
-        const res = await login(formData);
-
-        if (res.success) {
-            toast.success('Success')
-            redirect('/')
+        try {
+            await asyncFetch.post('/api/auth/login', values)
+            toast.success('Logged in successfully!')
+            router.push('/')
+            router.refresh() 
+        } catch (error: unknown) {
+            toast.error((error as APIError).message)
+            registerForm.setValue('password', '')
         }
     }
 

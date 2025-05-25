@@ -3,15 +3,21 @@
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { APIError } from '@/lib/apiErrorHandler'
+import { asyncFetch } from '@/lib/asyncFetch'
 import { joinGroupSchema } from '@/schemas/GroupSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Group } from '@prisma/client'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { z } from 'zod'
-import { createGroup } from '../create/actions'
 
 export default function JoinGroup() {
+
+    const router = useRouter()
 
     const createGroupForm = useForm<z.infer<typeof joinGroupSchema>>({
         resolver: zodResolver(joinGroupSchema),
@@ -20,19 +26,26 @@ export default function JoinGroup() {
         }
     })
 
-    const onSubmit = (values: z.infer<typeof joinGroupSchema>) => {
-        console.log(values)
+    const onSubmit = async (values: z.infer<typeof joinGroupSchema>) => {
+        try {
+            const res = await asyncFetch.get(`/api/group/join?invite=${values.inviteCode}`) as { message: string, group: Group }
+            toast(res.message)
+            router.push(`/group/${res.group.id}`)
+            router.refresh()
+        } catch (error: unknown) {
+            toast((error as APIError).message)
+        }
     }
 
     return (
         <Form {...createGroupForm}>
-            <form onSubmit={createGroupForm.handleSubmit(onSubmit)} className='flex-1 flex flex-col'>
+            <form onSubmit={createGroupForm.handleSubmit(onSubmit)} className='flex-1 flex flex-col p-4'>
                 <FormField
                     control={createGroupForm.control}
                     name="inviteCode"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Invite Code</FormLabel>
+                            <FormLabel>Enter Invite Code</FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
@@ -50,7 +63,9 @@ export default function JoinGroup() {
                     </Link>
 
                     <div className="flex w-full gap-2">
-                        <Button type='button' variant={'destructive'} className='w-full'>Cancel</Button>
+                        <Link href={'..'} rel='path' className='w-full'>
+                            <Button type='button' variant={'destructive'} className='w-full'>Cancel</Button>
+                        </Link>
                         <Button className='w-full'>Join Group</Button>
                     </div>
 

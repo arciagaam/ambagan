@@ -42,6 +42,7 @@ model Group {
   id            String          @id @default(uuid())
   name          String
   icon          String?
+  inviteCode    String
   createdAt     DateTime        @default(now()) @db.Timestamptz(6)
   updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz(6)
   contributions Contribution[]

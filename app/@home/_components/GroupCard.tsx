@@ -1,6 +1,4 @@
-import MultipleAvatars from '@/components/MultipleAvatars';
-import {  GroupWithUsers } from '@/types';
-import { Group } from '@prisma/client';
+import { GroupWithUsers } from '@/types';
 import Link from 'next/link';
 import React from 'react'
 import { FaUserFriends } from "react-icons/fa";
