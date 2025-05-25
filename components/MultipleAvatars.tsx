@@ -25,7 +25,7 @@ export default function MultipleAvatars({ avatars }: MultipleAvatarProps) {
         return firstLetter;
     }
 
-    const displayedAvatars: (React.JSX.Element | null)[] = new Array(4).fill(null).map((_, index) => {
+    const displayedAvatars: (React.JSX.Element | null)[] = new Array(avatarLimit).fill(null).map((_, index) => {
         if (index < avatarCount) {
             return (
                 <Avatar key={index} className='shadow relative'>
