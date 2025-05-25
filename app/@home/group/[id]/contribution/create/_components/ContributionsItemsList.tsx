@@ -1,6 +1,6 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { CreateContributionSchema } from '@/schemas/ContributionSchema'
+import { ContributionItemSchema, CreateContributionSchema } from '@/schemas/ContributionSchema'
 import React from 'react'
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form'
 import { z } from 'zod'
@@ -14,6 +14,12 @@ type ContributionsItemsListProps = {
     members: Member[]
 }
 
+const DEFAULT_CONTRIBUTION_ITEMS: z.infer<typeof ContributionItemSchema> = {
+    name: "",
+    amount: 0,
+    contributors: []
+}
+
 export default function ContributionsItemsList({
     members
 }: ContributionsItemsListProps) {
@@ -23,6 +29,18 @@ export default function ContributionsItemsList({
         control: form.control,
         name: 'contributionItems'
     })
+
+    const handleAppend = () => {
+        append(DEFAULT_CONTRIBUTION_ITEMS)
+    }
+
+    const handleRemove = (value?: number) => {
+        const index = value || fields.length - 1
+
+        if (index >= 0) {
+            remove(index)
+        }
+    }
 
     return (
         <div className="flex flex-col">
@@ -67,8 +85,6 @@ export default function ContributionsItemsList({
                                     control={form.control}
                                     name={`contributionItems.${index}.contributors`}
                                     render={({ field }) => {
-                                        // const selected = field.value.map((value) => value.id)
-                                        console.log({ field: field.value })
                                         return (
                                             <div>
                                                 <FormLabel>Contributors</FormLabel>
@@ -81,10 +97,24 @@ export default function ContributionsItemsList({
                                         )
                                     }}
                                 />
+                                <Button
+                                    type='button'
+                                    variant={"destructive"}
+                                    onClick={() => handleRemove(index)}
+                                >
+                                    Remove
+                                </Button>
                             </div>
                         )
                     }) : null
                 }
+                <Button
+                    type='button'
+                    variant={"outline"}
+                    onClick={handleAppend}
+                >
+                    Add Ambagan
+                </Button>
             </div>
         </div>
     )

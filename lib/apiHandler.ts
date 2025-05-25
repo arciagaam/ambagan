@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { apiErrorHandler } from './apiErrorHandler'
 
-export function apiHandler(handler: (req: Request) => Promise<NextResponse>) {
+export function apiHandler(handler: (req: Request, ...args: any) => Promise<NextResponse>) {
     return async function wrappedHandler(req: Request) {
         try {
             return await handler(req)
