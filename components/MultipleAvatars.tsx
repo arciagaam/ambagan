@@ -2,6 +2,7 @@ import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 type AvatarProps = {
+    id: string;
     src?: string;
     alt: string;
     name: string
@@ -15,12 +16,21 @@ export default function MultipleAvatars({ avatars }: MultipleAvatarProps) {
     const avatarCount: number = avatars?.length;
     const avatarLimit: number = 4;
 
+    const getFirstLetter = (name: string): string => {
+        if (!name) return ''
+
+        const trimmedName = name.trim()
+        const firstLetter = trimmedName.charAt(0).toUpperCase();
+        
+        return firstLetter;
+    }
+
     const displayedAvatars: (React.JSX.Element | null)[] = new Array(4).fill(null).map((_, index) => {
         if (index < avatarCount) {
             return (
                 <Avatar key={index} className='shadow relative'>
                     <AvatarImage src={avatars[index].src} alt={avatars[index].alt} />
-                    <AvatarFallback>{avatars[index].name}</AvatarFallback>
+                    <AvatarFallback className='text-xs'>{getFirstLetter(avatars[index].name)}</AvatarFallback>
                 </Avatar>
             );
         }
