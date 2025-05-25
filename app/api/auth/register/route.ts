@@ -7,7 +7,6 @@ export const POST = apiHandler(async (req: Request) => {
     const supabase = await createClient()
     const {
         firstName,
-        middleName,
         lastName,
         email,
         password,
