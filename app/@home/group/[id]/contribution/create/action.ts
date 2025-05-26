@@ -15,4 +15,4 @@ export const getMembers = async (id: string) => {
       last_name: true,
     }
   })
-:
+}
