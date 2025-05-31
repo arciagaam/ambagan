@@ -1,18 +1,18 @@
-import React from 'react';
-import { notFound } from 'next/navigation';
-import InviteCode from './_components/InviteCode';
-import GroupHeader from './_components/GroupHeader';
-import AmbaganList from './_components/AmbaganList';
-import prisma from '@/prisma/prisma';
+import React from 'react'
+import { notFound } from 'next/navigation'
+import InviteCode from './_components/InviteCode'
+import prisma from '@/prisma/prisma'
+import AmbaganList from './_components/AmbaganList'
+import GroupHeader from './_components/GroupHeader'
 
 type ViewGroupProps = {
     params: Promise<{
-        groupId: string;
-    }>;
-};
+        groupId: string
+    }>
+}
 
 export default async function Page({ params }: ViewGroupProps) {
-    const { groupId } = await params;
+    const { groupId } = await params
     const group = await prisma.group.findFirst({
         where: {
             id: groupId
@@ -25,7 +25,7 @@ export default async function Page({ params }: ViewGroupProps) {
             },
             Contribution: true,
         }
-    });
+    })
 
     if (!group) return notFound();
 
@@ -35,5 +35,5 @@ export default async function Page({ params }: ViewGroupProps) {
             <InviteCode inviteCode={group.inviteCode} />
             <AmbaganList contributions={group.Contribution} groupId={groupId} />
         </div>
-    );
+    )
 }
