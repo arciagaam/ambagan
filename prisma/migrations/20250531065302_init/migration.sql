@@ -1,10 +1,9 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "first_name" TEXT,
     "last_name" TEXT,
-    "password" TEXT,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -13,18 +12,20 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "UsersOnGroups" (
-    "userId" INTEGER NOT NULL,
-    "groupId" INTEGER NOT NULL,
-    "assignedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userId" TEXT NOT NULL,
+    "groupId" TEXT NOT NULL,
+    "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "role" TEXT NOT NULL,
 
     CONSTRAINT "UsersOnGroups_pkey" PRIMARY KEY ("userId","groupId")
 );
 
 -- CreateTable
 CREATE TABLE "Group" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "icon" TEXT,
+    "inviteCode" TEXT NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -35,9 +36,10 @@ CREATE TABLE "Group" (
 CREATE TABLE "Contribution" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "ownerId" TEXT NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "groupId" INTEGER NOT NULL,
+    "groupId" TEXT NOT NULL,
 
     CONSTRAINT "Contribution_pkey" PRIMARY KEY ("id")
 );
@@ -50,17 +52,17 @@ CREATE TABLE "ContributionItem" (
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "contributionId" INTEGER NOT NULL,
-    "contributionTypeId" INTEGER NOT NULL,
 
     CONSTRAINT "ContributionItem_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "ContributionType" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
+CREATE TABLE "Contributor" (
+    "contributionItemId" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
+    "amount" MONEY NOT NULL,
 
-    CONSTRAINT "ContributionType_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Contributor_pkey" PRIMARY KEY ("userId","contributionItemId")
 );
 
 -- CreateIndex
@@ -73,10 +75,16 @@ ALTER TABLE "UsersOnGroups" ADD CONSTRAINT "UsersOnGroups_userId_fkey" FOREIGN K
 ALTER TABLE "UsersOnGroups" ADD CONSTRAINT "UsersOnGroups_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "Group"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Contribution" ADD CONSTRAINT "Contribution_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Contribution" ADD CONSTRAINT "Contribution_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "Group"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ContributionItem" ADD CONSTRAINT "ContributionItem_contributionId_fkey" FOREIGN KEY ("contributionId") REFERENCES "Contribution"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ContributionItem" ADD CONSTRAINT "ContributionItem_contributionTypeId_fkey" FOREIGN KEY ("contributionTypeId") REFERENCES "ContributionType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Contributor" ADD CONSTRAINT "Contributor_contributionItemId_fkey" FOREIGN KEY ("contributionItemId") REFERENCES "ContributionItem"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Contributor" ADD CONSTRAINT "Contributor_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
