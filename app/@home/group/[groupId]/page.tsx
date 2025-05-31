@@ -11,23 +11,23 @@ import prisma from '@/prisma/prisma'
 
 type ViewGroupProps = {
     params: Promise<{
-        id: string
+        groupId: string
     }>
 }
 
-export default async function ViewGroup({ params }: ViewGroupProps) {
-    const { id } = await params
+export default async function Page({ params }: ViewGroupProps) {
+    const { groupId } = await params
     const group = await prisma.group.findFirst({
         where: {
-            id: id
+            id: groupId
         },
         include: {
             UsersOnGroups: {
                 include: {
-                    user: true
+                    User: true
                 }
             },
-            contributions: true,
+            Contribution: true,
         }
     })
 
@@ -40,7 +40,7 @@ export default async function ViewGroup({ params }: ViewGroupProps) {
                 <BackButton />
                 <h1 className='text-xl font-bold'>{group.name}</h1>
 
-                <Link href={`/group/${id}/manage`} className='ml-auto'>
+                <Link href={`/group/${groupId}/manage`} className='ml-auto'>
                     <Button variant={'outline'}>
                         <FaCog />
                     </Button>
@@ -52,8 +52,8 @@ export default async function ViewGroup({ params }: ViewGroupProps) {
             <div className="flex flex-col gap-2 p-4">
                 <h2>Ambagans</h2>
                 {
-                    group.contributions && group.contributions.length ? (
-                        group.contributions.map((contribution) => {
+                    group.Contribution && group.Contribution.length ? (
+                        group.Contribution.map((contribution) => {
                             return (
                                 <Ambagan
                                     key={contribution.id}

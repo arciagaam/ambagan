@@ -15,7 +15,7 @@ export const getAuthUser = async () => {
         include: {
             UsersOnGroups: {
                 include: {
-                    user: true
+                    User: true
                 }
             }
         }

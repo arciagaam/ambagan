@@ -25,9 +25,9 @@ export default function CreateContributionForm({
     members
 }: CreateContributionFormProps) {
     const router = useRouter()
-    const { id } = useParams()
+    const { groupId } = useParams()
 
-    if (!id) return notFound()
+    if (!groupId) return notFound()
 
     const createContributionForm = useForm<z.infer<typeof CreateContributionSchema>>({
         resolver: zodResolver(CreateContributionSchema),
@@ -43,7 +43,7 @@ export default function CreateContributionForm({
 
     const onSubmit = async (values: z.infer<typeof CreateContributionSchema>) => {
         try {
-            const res = await asyncFetch.post(`/api/group/${id}/contribution`, values) as { data: Contribution }
+            const res = await asyncFetch.post(`/api/group/${groupId}/contribution`, values) as { data: Contribution }
             // router.push(`/group/${res.data.id}`)
             // router.refresh()
         } catch (error: unknown) {

@@ -8,26 +8,26 @@ import prisma from '@/prisma/prisma'
 import { getAuthUser } from '@/utils/auth'
 
 type ManageGroupProps = {
-    params: {
-        id: string
-    }
+    params: Promise<{
+        groupId: string
+    }>
 }
 
 export default async function ManageGroup({ params }: ManageGroupProps) {
-    const { id } = await params
+    const { groupId } = await params
     const user = await getAuthUser()
 
     const group = await prisma.group.findFirst({
         where: {
-            id: id
+            id: groupId
         },
         include: {
             UsersOnGroups: {
                 include: {
-                    user: true
+                    User: true
                 }
             },
-            contributions: true,
+            Contribution: true,
         }
     })
 
@@ -38,7 +38,7 @@ export default async function ManageGroup({ params }: ManageGroupProps) {
     return (
         <div className="flex flex-col">
             <div className="flex px-4 py-6 items-center gap-2">
-                <BackButton href={`/group/${id}`} />
+                <BackButton href={`/group/${groupId}`} />
                 <h1 className='text-xl font-bold'>Manage Group</h1>
             </div>
 

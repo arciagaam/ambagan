@@ -5,7 +5,6 @@ import { getAuthUser } from '@/utils/auth'
 import prisma from '@/prisma/prisma'
 
 export default async function Home() {
-
   const user = await getAuthUser()
 
   if (!user) return

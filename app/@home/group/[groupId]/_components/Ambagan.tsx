@@ -15,9 +15,8 @@ export default function Ambagan({ contribution }: AmbaganProps) {
     name,
   } = contribution
   const pathname = usePathname()
-  console.log(pathname, contribution)
   return (
-    <Link href={`${pathname}/${id}`}>
+    <Link href={`${pathname}/contribution/${id}`}>
       <div className="flex flex-col p-4 rounded-2xl border border-border aspect-square bg-white shadow">
         {name}
       </div>

@@ -22,7 +22,7 @@ export const GET = apiHandler(async (req: Request) => {
     const userOnGroup = await prisma.usersOnGroups.findFirst({
         where: {
             userId: user.id,
-            group: {
+            Group: {
                 inviteCode: invite
             }
         }
@@ -39,5 +39,5 @@ export const GET = apiHandler(async (req: Request) => {
         }
     })
 
-    return NextResponse.json({ message: `Successfully joined ${group.name}`, group: group})
+    return NextResponse.json({ message: `Successfully joined ${group.name}`, group: group })
 })  

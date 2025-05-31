@@ -15,22 +15,21 @@ datasource db {
 }
 
 model User {
-  id                 String            @id @default(uuid())
-  email              String            @unique
-  first_name         String?
-  last_name          String?
-  createdAt          DateTime          @default(now()) @db.Timestamptz(6)
-  updatedAt          DateTime          @default(now()) @updatedAt @db.Timestamptz(6)
-  UsersOnGroups      UsersOnGroups[]
-  Contribution       Contribution[]
-  ContributionItem   ContributionItem? @relation(fields: [contributionItemId], references: [id])
-  contributionItemId Int?
+  id            String          @id @default(uuid())
+  email         String          @unique
+  first_name    String?
+  last_name     String?
+  createdAt     DateTime        @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz(6)
+  UsersOnGroups UsersOnGroups[]
+  Contribution  Contribution[]
+  Contributor   Contributor[]
 }
 
 model UsersOnGroups {
-  user      User     @relation(fields: [userId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
   userId    String
-  group     Group    @relation(fields: [groupId], references: [id])
+  Group     Group    @relation(fields: [groupId], references: [id])
   groupId   String
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   role      String //owner and member
@@ -45,29 +44,39 @@ model Group {
   inviteCode    String
   createdAt     DateTime        @default(now()) @db.Timestamptz(6)
   updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz(6)
-  contributions Contribution[]
+  Contribution  Contribution[]
   UsersOnGroups UsersOnGroups[]
 }
 
 model Contribution {
-  id                Int                @id @default(autoincrement())
-  name              String
-  owner             User               @relation(fields: [ownerId], references: [id])
-  ownerId           String
-  createdAt         DateTime           @default(now()) @db.Timestamptz(6)
-  updatedAt         DateTime           @default(now()) @updatedAt @db.Timestamptz(6)
-  contributionItems ContributionItem[]
-  group             Group              @relation(fields: [groupId], references: [id])
-  groupId           String
+  id               Int                @id @default(autoincrement())
+  name             String
+  Owner            User               @relation(fields: [ownerId], references: [id])
+  ownerId          String
+  createdAt        DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt        DateTime           @default(now()) @updatedAt @db.Timestamptz(6)
+  Group            Group              @relation(fields: [groupId], references: [id])
+  groupId          String
+  ContributionItem ContributionItem[]
 }
 
 model ContributionItem {
-  id             Int          @id @default(autoincrement())
+  id             Int           @id @default(autoincrement())
   name           String
-  amount         Decimal      @db.Money
-  contributors   User[]
-  createdAt      DateTime     @default(now()) @db.Timestamptz(6)
-  updatedAt      DateTime     @default(now()) @updatedAt @db.Timestamptz(6)
-  Contribution   Contribution @relation(fields: [contributionId], references: [id])
+  amount         Decimal       @db.Money
+  createdAt      DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime      @default(now()) @updatedAt @db.Timestamptz(6)
+  Contribution   Contribution  @relation(fields: [contributionId], references: [id])
   contributionId Int
+  Contributor    Contributor[]
+}
+
+model Contributor {
+  ContributionItem   ContributionItem @relation(fields: [contributionItemId], references: [id])
+  contributionItemId Int
+  User               User             @relation(fields: [userId], references: [id])
+  userId             String
+  amount             Decimal          @db.Money
+
+  @@id([userId, contributionItemId])
 }

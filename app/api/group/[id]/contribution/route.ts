@@ -29,7 +29,7 @@ export async function POST(
       name: body.name,
       ownerId: user.id,
       groupId: id,
-      contributionItems: {
+      ContributionItem: {
         createMany: {
           data: body.contributionItems.map((item) => {
             return {

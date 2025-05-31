@@ -15,7 +15,6 @@ type ManageGroupNameProps = {
 }
 
 export default function ManageGroupName({ group, isOwner }: ManageGroupNameProps) {
-
     const [groupName, setGroupName] = useState(group.name)
 
     const handleRenameGroup = async () => {
@@ -23,12 +22,8 @@ export default function ManageGroupName({ group, isOwner }: ManageGroupNameProps
             await asyncFetch.put('/api/group/rename', { id: group.id, name: groupName })
             toast.success('Group renamed')
         } catch (error: unknown) {
-
-
             toast.error((error as APIError).message)
         }
-
-
     }
     return (
         <div className="flex flex-col p-4 gap-4 bg-white rounded-2xl border border-border shadow">
