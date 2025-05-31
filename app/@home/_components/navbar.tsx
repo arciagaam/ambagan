@@ -1,18 +1,20 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { APIError } from '@/lib/apiErrorHandler'
 import { asyncFetch } from '@/lib/asyncFetch'
-import { Menu } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import React from 'react'
+import { ArrowLeft, LogOutIcon } from 'lucide-react'
+import Link from 'next/link'
+import { useRouter, usePathname } from 'next/navigation'
+import React, { useState } from 'react'
 import toast from 'react-hot-toast'
+import { FaUser } from 'react-icons/fa'
 
 export default function Navbar() {
 
     const router = useRouter()
-
+    const pathname = usePathname()
+    const [isOpen, setIsOpen] = useState(false)
     const handleLogout = async () => {
         try {
             await asyncFetch.get('/api/auth/signout');
@@ -22,23 +24,47 @@ export default function Navbar() {
             toast.error((error as APIError).message)
         }
     }
+
     return (
 
-        <div className="flex bg-white px-4 py-2 items-center justify-between w-full shadow">
+        <>
+            {
+                // isOpen && <div className="absolute inset-0 bg-black/40"></div>
+            }
 
-            <h1 className='text-xl font-bold uppercase'>Ambagan</h1>
+            <div className="flex px-4 py-2 items-center justify-between w-full h-[4rem] bg-background">
 
-            <Sheet>
-                <SheetTrigger asChild>
-                    <Button><Menu /></Button>
-                </SheetTrigger>
-                <SheetContent className='p-4 w-full flex flex-col'>
-                    <SheetTitle className='sr-only'>Menu Bar</SheetTitle>
-                    <Button onClick={handleLogout} className='mt-auto'>
-                        Logout
+                {
+                    pathname !== '/' &&
+                    <Link href={'..'} rel='path'>
+                        <Button variant="outline" className="rounded-full aspect-square size-12 border shadow-none border-border ">
+                            <ArrowLeft />
+                        </Button>
+                    </Link>
+                }
+
+
+
+
+                <div className="flex flex-col relative z-[12] ml-auto">
+                    <Button className='rounded-lg aspect-square size-8 transition-all' onClick={() => setIsOpen(!isOpen)}>
+
                     </Button>
-                </SheetContent>
-            </Sheet>
-        </div>
+
+                    <div className={`absolute top-[calc(100%+1rem)] right-0 transition-all duration-200 ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
+                        <div className="flex flex-col gap-[1rem]">
+                            <Button variant={'secondary'} className='rounded-2xl aspect-square size-18 bg-white transition-all'>
+                                <FaUser />
+                            </Button>
+
+                            <Button variant={'secondary'} onClick={handleLogout} className='rounded-2xl aspect-square size-18 bg-white transition-all delay-200'>
+                                <LogOutIcon />
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+
     )
 }
