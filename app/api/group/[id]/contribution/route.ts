@@ -34,13 +34,22 @@ export async function POST(
           data: body.contributionItems.map((item) => {
             return {
               name: item.name,
-              amount: item.amount
+              amount: item.amount,
             }
-          })
+          }),
+        }
+      }
+    },
+    include: {
+      ContributionItem: {
+        select: {
+          id: true
         }
       }
     },
   })
+
+  console.log(contribution.ContributionItem)
 
   return NextResponse.json({ data: contribution }, { status: 201 })
 }
