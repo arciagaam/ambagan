@@ -1,6 +1,7 @@
 import React from 'react'
 import prisma from '@/prisma/prisma'
 import { notFound } from 'next/navigation'
+import ContributionItemCard from './_components/ContributionItemCard'
 
 type PageProps = {
   params: Promise<{
@@ -35,34 +36,40 @@ export default async function Page({ params }: PageProps) {
 
   if (!contribution) return notFound()
 
+  // Handler stubs to be implemented later
+  function handleEditContributionAmount(itemId: number) {
+    // TODO: Implement edit contribution amount logic
+  }
+  function handleEditContributor(userId: number, itemId: number) {
+    // TODO: Implement edit contributor logic
+  }
+  function handleRemoveContributor(userId: number, itemId: number) {
+    // TODO: Implement remove contributor logic
+  }
+  function handleAddContributor(itemId: number) {
+    // TODO: Implement add contributor logic
+  }
+  function handleAddItem() {
+    // TODO: Implement add item logic
+  }
+
   return (
-    <div className="flex flex-col">
-      <h1>{contribution.name}</h1>
+    <div className="flex flex-col gap-6 p-6 max-w-2xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">{contribution.name}</h1>
       {
         contribution.ContributionItem && contribution.ContributionItem.length ? (
-          contribution.ContributionItem.map((contribution) => {
-            return (
-              <div key={contribution.id}>
-                <p>{contribution.name}</p>
-                <p>{String(contribution.amount)}</p>
-                {
-                  contribution.Contributor && contribution.Contributor.length ? (
-                    contribution.Contributor.map((contributor) => {
-                      return (
-                        <div key={contributor.userId}>
-                          <p>{contributor.User.first_name ?? contributor.User.email}</p>
-                        </div>
-                      )
-                    })
-                  ) : (
-                    <p>Add Contributor</p>
-                  )
-                }
-              </div>
-            )
-          })
+          contribution.ContributionItem.map((item) => (
+            <ContributionItemCard
+              key={item.id}
+              item={item}
+              onEditAmount={handleEditContributionAmount}
+              onEditContributor={handleEditContributor}
+              onRemoveContributor={handleRemoveContributor}
+              onAddContributor={handleAddContributor}
+            />
+          ))
         ) : (
-          <p>Add Item</p>
+          <p className="text-gray-400 italic">No items. <button className="text-blue-500 hover:underline" onClick={handleAddItem}>Add Item</button></p>
         )
       }
     </div >
