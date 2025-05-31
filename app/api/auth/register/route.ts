@@ -15,6 +15,12 @@ export const POST = apiHandler(async (req: Request) => {
     const signupUser = await supabase.auth.signUp({
         email: email,
         password: password,
+        options: {
+            data: {
+                first_name: firstName,
+                last_name: lastName
+            }
+        }
     })
 
     if (signupUser.error) throw new Error(signupUser.error.message);
