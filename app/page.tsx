@@ -6,7 +6,7 @@ import { Url } from "@/lib/constants";
 import Link from "next/link";
 import { FaCalculator } from "react-icons/fa";
 
-export default function Page() {
+export default function LandingPage() {
   return (
     <div className="max-w-[2400px] mx-auto">
       <Navbar />
@@ -19,9 +19,10 @@ export default function Page() {
               Easily and fairly divide costs with friends and family, from dinner tabs to shared expenses. Ambagan makes splitting bills simple and stress-free.
             </p>
           </div>
-          <Button asChild size="lg" className="mt-10 font-bold">
-            <Link href={Url.getStarted}>Split your first bill</Link>
-          </Button>
+
+          <Link href={Url.getStarted}>
+            <Button size="lg" className="mt-10 font-bold">Split your first bill</Button>
+          </Link>
         </div>
       </section>
 
