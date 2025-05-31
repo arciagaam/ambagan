@@ -8,7 +8,6 @@ export default function GroupCard({ group }: { group: GroupWithUsers }) {
         <Link href={`/group/${group.id}`}>
             <div className="flex flex-col p-4 rounded-2xl border border-border aspect-square bg-white shadow">
                 {group.name}
-
                 <div className="flex gap-2 items-center  mt-auto">
                     <FaUserFriends size={18} />
                     {group.UsersOnGroups.length}
