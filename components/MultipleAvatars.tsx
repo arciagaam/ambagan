@@ -14,7 +14,7 @@ type MultipleAvatarProps = {
 
 export default function MultipleAvatars({ avatars }: MultipleAvatarProps) {
     const avatarCount: number = avatars?.length;
-    const avatarLimit: number = 4;
+    const avatarLimit: number = 3; // Changed from 4 to 3
 
     const getFirstLetter = (name: string): string => {
         if (!name) return ''
@@ -40,7 +40,7 @@ export default function MultipleAvatars({ avatars }: MultipleAvatarProps) {
     return (
         <div className='flex -space-x-2'>
             {displayedAvatars.length && displayedAvatars}
-            {avatarCount >= avatarLimit &&
+            {avatarCount > avatarLimit && // Changed from >= to >
                 <Avatar className='shadow relative'>
                     <AvatarFallback>{`+${avatarCount - avatarLimit}`}</AvatarFallback>
                 </Avatar>}

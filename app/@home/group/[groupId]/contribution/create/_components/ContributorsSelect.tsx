@@ -30,7 +30,7 @@ export const ContributorsSelect = ({
   }
 
   const selectedOptions = options.filter((option) => selected.some((member) => option.id === member.id))
-
+  console.log(options)
   return (
     <Popover>
       <PopoverTrigger asChild>

@@ -22,5 +22,8 @@ export default function Page() {
         </div>
       </section>
     </>
+
+    // Bill Splitting Made Simple & Accurate. Start Ambagan!
+    // Easily and fairly divide costs with friends and family, from dinner tabs to shared expenses. Ambagan makes splitting bills simple and stress-free.
   );
 }
