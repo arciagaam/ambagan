@@ -6,13 +6,13 @@ import AmbaganList from './_components/AmbaganList';
 import prisma from '@/prisma/prisma';
 
 type ViewGroupProps = {
-    params: {
+    params: Promise<{
         groupId: string;
-    };
+    }>;
 };
 
 export default async function Page({ params }: ViewGroupProps) {
-    const { groupId } = params;
+    const { groupId } = await params;
     const group = await prisma.group.findFirst({
         where: {
             id: groupId
