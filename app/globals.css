@@ -2,6 +2,24 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Add these new color variables after your existing color definitions in :root */
+@theme {
+  /* ... existing colors ... */
+  --fun-purple: oklch(0.5960 0.2074 296.5793);
+  --fun-blue: oklch(0.6959 0.1891 242.4796);
+  --fun-pink: oklch(0.7227 0.1920 332.5793);
+  --fun-green: oklch(0.7227 0.1920 149.5793);
+  /* ... rest of your variables ... */
+}
+
+.dark {
+  /* ... existing dark mode colors ... */
+  --fun-purple: oklch(0.6960 0.2274 296.5793);
+  --fun-blue: oklch(0.7459 0.1891 242.4796);
+  --fun-pink: oklch(0.7727 0.1920 332.5793);
+  --fun-green: oklch(0.7727 0.1920 149.5793);
+  /* ... rest of your variables ... */
+}
 
 :root {
   --background: oklch(0.9911 0 0);
