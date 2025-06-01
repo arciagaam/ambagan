@@ -53,7 +53,7 @@ export default function CreateContributionForm({
 
     return (
         <Form {...createContributionForm}>
-            <form onSubmit={createContributionForm.handleSubmit(onSubmit)} className='flex flex-col gap-5'>
+            <form onSubmit={createContributionForm.handleSubmit(onSubmit)} className='flex flex-col gap-5 p-4'>
                 <FormField
                     control={createContributionForm.control}
                     name="name"

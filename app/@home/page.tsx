@@ -6,6 +6,7 @@ import QuickActions from './_components/QuickActions'
 import RecentContributions from './_components/RecentContributions'
 import { getAuthUser } from '@/utils/auth'
 import prisma from '@/prisma/prisma'
+import MyGroups from './_components/MyGroups'
 
 export default async function Home() {
   const user = await getAuthUser()
@@ -25,49 +26,61 @@ export default async function Home() {
     },
   });
 
-  // Mock data for recent contributions
-  const recentContributions = [
-    { id: 1, title: "Ambagan Title", amount: "PHP 23.50", group: "Group name", date: "Today/Yesterday/MM/DD", users: [
-      { id: "1", name: "Alex", alt: "Alex" },
-      { id: "2", name: "Jamie", alt: "Jamie" },
-      { id: "3", name: "Taylor", alt: "Taylor" },
-      { id: "4", name: "Taylor", alt: "Taylor" },
-    ]},
-    { id: 2, title: "Coffee run", amount: "PHP 24.50", group: "Roommates", date: "Today", users: [
-      { id: "1", name: "Alex", alt: "Alex" },
-      { id: "2", name: "Jamie", alt: "Jamie" },
-      { id: "3", name: "Taylor", alt: "Taylor" },
-    ]},
-    { id: 3, title: "Movie night", amount: "PHP 42.00", group: "Friends", date: "Yesterday", users: [
-      { id: "1", name: "Alex", alt: "Alex" },
-      { id: "4", name: "Jordan", alt: "Jordan" },
-    ]},
-  ];
+
+  const recentContributions = await prisma.contributor.findMany({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      ContributionItem: {
+        include: {
+          Contribution: {
+            include: {
+              Group: {
+                include: {
+                  UsersOnGroups: {
+                    include: {
+                      User: true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    orderBy: {
+      ContributionItem: {
+        createdAt: 'desc'
+      }
+    },
+    take: 5
+  })
 
   return (
     <div className="flex flex-col pb-6">
-      <div className="flex flex-col w-full bg-primary text-secondary p-6 rounded-b-2xl">
-        <div className="flex flex-col">
-          <h1 className='text-xl font-bold'>Hello! John Doe</h1>
-          <p className='text-sm text-muted-secondary'>Ready to split your bills with your friends?</p>
+      <div className="flex flex-col px-4 gap-10">
+        <div className="flex flex-col w-full bg-primary text-secondary p-6 rounded-b-2xl">
+          <div className="flex flex-col">
+            <h1 className='text-xl font-bold'>Hello! John Doe</h1>
+            <p className='text-sm text-muted-secondary'>Ready to split your bills with your friends?</p>
+          </div>
+
+          {/* Stats section component */}
+          <StatsSection groupCount={groups.length} />
         </div>
-        
-        {/* Stats section component */}
-        <StatsSection groupCount={groups.length} />
+
+        {/* Quick actions component */}
+        <QuickActions />
+
+        {/* Recent contributions component */}
+        <RecentContributions contributions={recentContributions} />
+
+        {/* My groups component */}
+        <MyGroups groups={groups} />
       </div>
 
-      {/* Quick actions component */}
-      <QuickActions />
-
-      {/* Recent contributions component */}
-      <RecentContributions contributions={recentContributions} />
-
-      <div className="flex flex-col p-4 pt-0">
-        <h2 className='text-lg font-bold mb-2'>My Groups</h2>
-        <p className="text-sm text-muted-foreground mb-3">Manage expenses with your friends and family</p>
-      </div>
-
-      {(groups && groups.length > 0) ? <GroupsGrid groups={groups} /> : <NoGroups />}
     </div>
   )
 }

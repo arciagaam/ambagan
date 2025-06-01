@@ -1,15 +1,10 @@
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { User } from '@prisma/client'
 
-type AvatarProps = {
-    id: string;
-    src?: string;
-    alt: string;
-    name: string
-}
 
 type MultipleAvatarProps = {
-    avatars: AvatarProps[]
+    avatars: User[]
 }
 
 export default function MultipleAvatars({ avatars }: MultipleAvatarProps) {
@@ -29,8 +24,7 @@ export default function MultipleAvatars({ avatars }: MultipleAvatarProps) {
         if (index < avatarCount) {
             return (
                 <Avatar key={index} className='shadow relative'>
-                    <AvatarImage src={avatars[index].src} alt={avatars[index].alt} />
-                    <AvatarFallback className='text-xs'>{getFirstLetter(avatars[index].name)}</AvatarFallback>
+                    <AvatarFallback className='text-xs'>{getFirstLetter(avatars[index].first_name || '')}</AvatarFallback>
                 </Avatar>
             );
         }

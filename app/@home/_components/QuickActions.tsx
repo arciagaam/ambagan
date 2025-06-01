@@ -30,7 +30,7 @@ const ActionButton = ({ icon, label, href, isDashed = false }: ActionButtonProps
 
 export default function QuickActions() {
   return (
-    <div className="flex gap-3 p-4 overflow-x-auto">
+    <div className="flex gap-3 overflow-x-auto py-1 items-center justify-center">
       <ActionButton 
         icon={<FaPlus size={16} />}
         label="New Group"
