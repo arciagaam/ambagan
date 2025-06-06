@@ -2,8 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import Ambagan from './Ambagan';
 import NoAmbagans from './NoAmbagans';
-import { Button } from '@/components/ui/button';
 import { Contribution } from '@prisma/client';
+import { FaPlus } from 'react-icons/fa';
 
 type AmbaganListProps = {
   contributions: Contribution[];
@@ -22,11 +22,13 @@ export default function AmbaganList({ contributions, groupId }: AmbaganListProps
               contribution={contribution}
             />
           ))}
-          <Button className='w-full' asChild>
-            <Link href={`/group/${groupId}/contribution/create`} className='w-full'>
+
+          <Link href={`/group/${groupId}/contribution/create`}>
+            <div className="flex flex-col text-center p-4 rounded-2xl border border-border aspect-square bg-white shadow items-center justify-center gap-2">
+              <FaPlus />
               Create Ambagan
-            </Link>
-          </Button>
+            </div>
+          </Link>
         </>
       ) : (
         <NoAmbagans />
