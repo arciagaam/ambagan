@@ -1,6 +1,7 @@
 import React from 'react'
 import prisma from '@/prisma/prisma'
 import { notFound } from 'next/navigation'
+import { Item } from './_components/Item'
 
 type PageProps = {
   params: Promise<{
@@ -42,23 +43,10 @@ export default async function Page({ params }: PageProps) {
         contribution.ContributionItem && contribution.ContributionItem.length ? (
           contribution.ContributionItem.map((contribution) => {
             return (
-              <div key={contribution.id}>
-                <p>{contribution.name}</p>
-                <p>{String(contribution.amount)}</p>
-                {
-                  contribution.Contributor && contribution.Contributor.length ? (
-                    contribution.Contributor.map((contributor) => {
-                      return (
-                        <div key={contributor.userId}>
-                          <p>{contributor.User.first_name ?? contributor.User.email}</p>
-                        </div>
-                      )
-                    })
-                  ) : (
-                    <p>Add Contributor</p>
-                  )
-                }
-              </div>
+              <Item
+                key={contribution.id}
+                data={contribution}
+              />
             )
           })
         ) : (

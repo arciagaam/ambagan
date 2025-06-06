@@ -8,6 +8,11 @@ export type GroupWithUsers = Prisma.GroupGetPayload<{
 
 export type ContributionItemWithRelations = Prisma.ContributionItemGetPayload<{
     include: {
+        Contributor: {
+            include: {
+                User: true
+            }
+        };
         Contribution: {
             include: {
                 Group: {
