@@ -1,3 +1,4 @@
+import { CURRENCIES } from "@/constants";
 import { z } from "zod";
 
 export const ContributorSchema = z.object({
@@ -13,6 +14,7 @@ export const ContributionItemSchema = z.object({
 
 export const CreateContributionSchema = z.object({
     name: z.string().min(1),
+    currency: z.enum(CURRENCIES.map(currency => currency.code) as [string, ...string[]]),
     contributionItems: z.array(ContributionItemSchema)
 })
 

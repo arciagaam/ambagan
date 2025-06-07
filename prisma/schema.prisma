@@ -57,6 +57,7 @@ model Contribution {
   updatedAt        DateTime           @default(now()) @updatedAt @db.Timestamptz(6)
   Group            Group              @relation(fields: [groupId], references: [id])
   groupId          String
+  currency         String             
   ContributionItem ContributionItem[]
 }
 

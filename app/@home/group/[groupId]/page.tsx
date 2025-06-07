@@ -25,17 +25,26 @@ export default async function Page({ params }: ViewGroupProps) {
             Contribution: {
                 include: {
                     ContributionItem: true
+                },
+                orderBy: {
+                    createdAt: 'desc'
                 }
             },
-        }
+        },
+
     })
+
+    console.log(group)
 
     if (!group) return notFound();
 
     return (
+
+
         <div className="flex flex-col p-4 gap-10">
             <GroupHeader group={group} />
             <AmbaganList contributions={group.Contribution} groupId={groupId} />
         </div>
+
     )
 }

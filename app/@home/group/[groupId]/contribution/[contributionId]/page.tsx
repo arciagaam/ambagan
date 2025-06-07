@@ -3,6 +3,7 @@ import prisma from '@/prisma/prisma'
 import { notFound } from 'next/navigation'
 import { getAuthUser } from '@/utils/auth'
 import { Card, CardContent } from '@/components/ui/card'
+import { CURRENCY_SYMBOLS } from '@/constants'
 
 type PageProps = {
   params: Promise<{
@@ -42,6 +43,8 @@ export default async function Page({ params }: PageProps) {
   const totalAmount = contribution.ContributionItem.reduce((acc, item) => acc + Number(item.amount), 0)
   const totalPayable = contribution.ContributionItem.filter((contributionItem) => contributionItem.Contributor.some((contributor) => contributor.userId === user?.id)).reduce((acc, item) => acc + Number(item.amount), 0)
 
+
+  const currencySymbol = contribution.currency
   return (
     <div className="flex flex-col p-4 gap-10">
       <Card className='rounded-2xl bg-primary border-0 relative overflow-clip'>
@@ -51,12 +54,12 @@ export default async function Page({ params }: PageProps) {
           <div className="flex gap-10">
             <div className="flex flex-col">
               <p className='text-sm'>Grand Total</p>
-              <p className='font-bold'>₱ {totalAmount.toLocaleString()}</p>
+              <p className='font-bold'>{totalAmount.toLocaleString()} {currencySymbol} </p>
             </div>
 
             <div className="flex flex-col">
               <p className='text-sm'>Total Payable</p>
-              <p className='font-bold'>₱ {totalPayable.toLocaleString()}</p>
+              <p className='font-bold'>{totalPayable.toLocaleString()} {currencySymbol}</p>
             </div>
           </div>
 
@@ -75,7 +78,7 @@ export default async function Page({ params }: PageProps) {
 
       <div className="flex flex-col gap-4">
 
-        <h1 className='text-xl font-bold'>Contributions</h1>
+        <h1 className='text-xl font-bold'>Items</h1>
 
         <div className="flex flex-col gap-5">
           {
@@ -88,7 +91,7 @@ export default async function Page({ params }: PageProps) {
                     <div>
                       <h3 className="font-medium">{contributionItem.name || 'Unnamed Ambagan'}</h3>
                       <p className="text-sm text-muted-foreground">
-                        Amount: ₱{contributionItem.amount?.toLocaleString() || 0}
+                        Amount: {contributionItem.amount?.toLocaleString() || 0} {currencySymbol}
                       </p>
                       <p className="text-sm text-muted-foreground">
                         Contributors: {contributionItem.Contributor?.length || 0}

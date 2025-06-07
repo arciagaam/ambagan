@@ -4,6 +4,10 @@ import RecentContributions from './_components/RecentContributions'
 import { getAuthUser } from '@/utils/auth'
 import prisma from '@/prisma/prisma'
 import MyGroups from './_components/MyGroups'
+import FAB from '@/components/floating-action-button'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { FaUsers } from 'react-icons/fa'
 
 export default async function Home() {
   const user = await getAuthUser()
@@ -75,6 +79,23 @@ export default async function Home() {
 
         {/* My groups component */}
         <MyGroups groups={groups} />
+
+        <FAB>
+          <Link href={`/group/join`}>
+            <Button variant={'secondary'} className="rounded-full  border shadow-none border-border">
+              <FaUsers size={12} />
+              Join Group
+            </Button>
+          </Link>
+
+          <Link href={`/group/create`}>
+            <Button variant={'secondary'} className="rounded-full  border shadow-none border-border">
+              <FaUsers size={12} />
+              Create Group
+            </Button>
+          </Link>
+
+        </FAB>
       </div>
 
     </div>
