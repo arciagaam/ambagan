@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
-import MultipleAvatars from '@/components/MultipleAvatars'
+import MultipleAvatars from '@/components/multiple-avatars'
 import { ContributionItem, Group, User, UsersOnGroups } from '@prisma/client'
 import Link from 'next/link'
 import { ContributionItemWithRelations } from '@/types'
