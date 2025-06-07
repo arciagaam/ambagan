@@ -6,6 +6,18 @@ export type GroupWithUsers = Prisma.GroupGetPayload<{
     }
 }>
 
+export type UsersOnGroupsWithUser = Prisma.UsersOnGroupsGetPayload<{
+    include: {
+        User: true
+    }
+}>
+
+export type ContributionWithRelations = Prisma.ContributionGetPayload<{
+    include: {
+        ContributionItem: true
+    }
+}>
+
 export type ContributionItemWithRelations = Prisma.ContributionItemGetPayload<{
     include: {
         Contribution: {

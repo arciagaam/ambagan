@@ -1,6 +1,5 @@
 import React from 'react'
 import GroupsGrid from './GroupsGrid'
-import { Group, User } from '@prisma/client'
 import NoGroups from './NoGroups'
 import { GroupWithUsers } from '@/types'
 

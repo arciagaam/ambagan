@@ -1,4 +1,3 @@
-import BackButton from '@/components/back-button'
 import { notFound } from 'next/navigation'
 import React from 'react'
 import ManageGroupMembers from './_components/ManageGroupMembers'
@@ -35,15 +34,13 @@ export default async function ManageGroup({ params }: ManageGroupProps) {
 
     const isOwner = user?.UsersOnGroups?.find(userOnGroup => userOnGroup.groupId == group.id)?.role == 'owner'
 
+
     return (
-        <div className="flex flex-col">
-            <div className="flex px-4 py-6 items-center gap-2">
-                <BackButton href={`/group/${groupId}`} />
-                <h1 className='text-xl font-bold'>Manage Group</h1>
-            </div>
+        <div className="flex flex-col p-4 gap-4">
+            <h1 className='text-xl font-bold'>Manage Group</h1>
 
 
-            <div className="flex flex-col gap-4 p-4 pt-0">
+            <div className="flex flex-col gap-4">
                 <ManageGroupName group={group} isOwner={isOwner} />
                 <ManageGroupMembers members={group.UsersOnGroups} />
                 {

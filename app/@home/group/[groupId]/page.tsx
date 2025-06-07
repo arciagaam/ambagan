@@ -1,6 +1,5 @@
 import React from 'react'
 import { notFound } from 'next/navigation'
-import InviteCode from './_components/InviteCode'
 import prisma from '@/prisma/prisma'
 import AmbaganList from './_components/AmbaganList'
 import GroupHeader from './_components/GroupHeader'
@@ -23,16 +22,19 @@ export default async function Page({ params }: ViewGroupProps) {
                     User: true
                 }
             },
-            Contribution: true,
+            Contribution: {
+                include: {
+                    ContributionItem: true
+                }
+            },
         }
     })
 
     if (!group) return notFound();
 
     return (
-        <div className="flex flex-col">
-            <GroupHeader groupName={group.name} groupId={groupId} />
-            <InviteCode inviteCode={group.inviteCode} />
+        <div className="flex flex-col p-4 gap-10">
+            <GroupHeader group={group} />
             <AmbaganList contributions={group.Contribution} groupId={groupId} />
         </div>
     )
