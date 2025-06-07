@@ -38,79 +38,77 @@ export default function CreateGroup() {
 
     return (
         <div className="flex flex-col min-h-[90dvh] bg-background p-4 md:p-6">
-            <div className="max-w-md w-full mx-auto rounded-xl overflow-hidden">
-                {/* Header */}
-                <div className="bg-primary p-6 text-center">
-                    <h1 className="text-2xl font-bold text-primary-foreground">Create Your Group</h1>
-                    <p className="text-primary-foreground/80 mt-1">Your group is where you and your friends split bills together</p>
-                </div>
+            {/* Header */}
+            <div className="bg-primary p-6 text-center rounded-2xl">
+                <h1 className="text-2xl font-bold text-primary-foreground">Create Your Group</h1>
+                <p className="text-primary-foreground/80 mt-1">Your group is where you and your friends split bills together</p>
+            </div>
 
-                {/* Form */}
-                <Form {...createGroupForm}>
-                    <form onSubmit={createGroupForm.handleSubmit(onSubmit)} className='flex-1 flex flex-col gap-6 pt-6'>
-                        <FormField
-                            control={createGroupForm.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <AmbaganInput
-                                        containerClass='border-rounded-tl-none'
-                                        hasError={createGroupForm.formState.errors.name}
-                                        icon={<FaUserFriends />}
-                                        placeholder="Enter your group name"
-                                        {...field}
-                                        value={field.value}
-                                    />
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        {/* Group Categories */}
-                        <div className="mt-4">
-                            <h3 className="text-sm font-medium text-muted-foreground mb-3">WHY CREATE A GROUP?</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <CategoryCard
+            {/* Form */}
+            <Form {...createGroupForm}>
+                <form onSubmit={createGroupForm.handleSubmit(onSubmit)} className='flex-1 flex flex-col gap-6 pt-6'>
+                    <FormField
+                        control={createGroupForm.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <AmbaganInput
+                                    containerClass='border-rounded-tl-none'
+                                    hasError={createGroupForm.formState.errors.name}
                                     icon={<FaUserFriends />}
-                                    label="Friends"
-                                    description="Split bills for outings, dinners, and shared expenses with friends"
-                                    color="var(--fun-purple)"
+                                    placeholder="Enter your group name"
+                                    {...field}
+                                    value={field.value}
                                 />
-                                <CategoryCard
-                                    icon={<FaGamepad />}
-                                    label="Trip"
-                                    description="Track expenses for vacations, road trips, and adventures"
-                                    color="var(--fun-blue)"
-                                />
-                                <CategoryCard
-                                    icon={<FaBook />}
-                                    label="Study Group"
-                                    description="Share costs for books, courses, and study materials"
-                                    color="var(--fun-pink)"
-                                />
-                                <CategoryCard
-                                    icon={<FaSchool />}
-                                    label="Household"
-                                    description="Manage rent, utilities, groceries, and shared living expenses"
-                                    color="var(--fun-green)"
-                                />
-                            </div>
-                        </div>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                        {/* Action Buttons */}
-                        <div className="mt-6">
-                            <Button className='w-full py-6 text-lg rounded-md'>Create Group</Button>
+                    {/* Group Categories */}
+                    <div className="mt-4">
+                        <h3 className="text-sm font-medium text-muted-foreground mb-3">WHY CREATE A GROUP?</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <CategoryCard
+                                icon={<FaUserFriends />}
+                                label="Friends"
+                                description="Split bills for outings, dinners, and shared expenses with friends"
+                                color="var(--fun-purple)"
+                            />
+                            <CategoryCard
+                                icon={<FaGamepad />}
+                                label="Trip"
+                                description="Track expenses for vacations, road trips, and adventures"
+                                color="var(--fun-blue)"
+                            />
+                            <CategoryCard
+                                icon={<FaBook />}
+                                label="Study Group"
+                                description="Share costs for books, courses, and study materials"
+                                color="var(--fun-pink)"
+                            />
+                            <CategoryCard
+                                icon={<FaSchool />}
+                                label="Household"
+                                description="Manage rent, utilities, groceries, and shared living expenses"
+                                color="var(--fun-green)"
+                            />
                         </div>
-                    </form>
-                </Form>
+                    </div>
 
-                {/* Join Option */}
-                <div className="mt-6 pt-6 border-t text-center">
-                    <p className="text-muted-foreground mb-3">Have an invite code already?</p>
-                    <Link href="/group/join" className="w-full">
-                        <Button variant="outline" className="w-full">Join a Group</Button>
-                    </Link>
-                </div>
+                    {/* Action Buttons */}
+                    <div className="mt-6">
+                        <Button className='w-full py-6 text-lg rounded-md'>Create Group</Button>
+                    </div>
+                </form>
+            </Form>
+
+            {/* Join Option */}
+            <div className="mt-6 pt-6 border-t text-center">
+                <p className="text-muted-foreground mb-3">Have an invite code already?</p>
+                <Link href="/group/join" className="w-full">
+                    <Button variant="outline" className="w-full">Join a Group</Button>
+                </Link>
             </div>
         </div>
     )

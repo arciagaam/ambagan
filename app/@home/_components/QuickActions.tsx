@@ -14,7 +14,7 @@ const ActionButton = ({ icon, label, href, isDashed = false }: ActionButtonProps
   const buttonContent = (
     <Button 
       variant="outline" 
-      className={`flex flex-col h-20 w-24 gap-1 rounded-xl ${isDashed ? 'border-dashed' : ''}`}
+      className={`flex bg-primary flex-col h-20 w-24 gap-1 rounded-2xl ${isDashed ? 'border-dashed' : ''}`}
     >
       {icon}
       <span className="text-xs">{label}</span>
@@ -30,7 +30,7 @@ const ActionButton = ({ icon, label, href, isDashed = false }: ActionButtonProps
 
 export default function QuickActions() {
   return (
-    <div className="flex gap-3 overflow-x-auto py-1 items-center justify-center">
+    <div className="flex gap-3 overflow-x-auto pt-3 items-center justify-center">
       <ActionButton 
         icon={<FaPlus size={16} />}
         label="New Group"

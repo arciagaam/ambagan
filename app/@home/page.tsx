@@ -1,5 +1,4 @@
 import React from 'react'
-import StatsSection from './_components/StatsSection'
 import QuickActions from './_components/QuickActions'
 import RecentContributions from './_components/RecentContributions'
 import { getAuthUser } from '@/utils/auth'
@@ -59,18 +58,17 @@ export default async function Home() {
   return (
     <div className="flex flex-col pb-6">
       <div className="flex flex-col px-4 gap-10">
-        <div className="flex flex-col w-full bg-primary text-secondary p-6 rounded-b-2xl">
+        <div className="flex flex-col w-full bg-primary text-secondary p-6 rounded-2xl">
           <div className="flex flex-col">
             <h1 className='text-xl font-bold'>Hello! John Doe</h1>
             <p className='text-sm text-muted-secondary'>Ready to split your bills with your friends?</p>
+            <QuickActions />
           </div>
 
           {/* Stats section component */}
-          <StatsSection groupCount={groups.length} />
         </div>
 
         {/* Quick actions component */}
-        <QuickActions />
 
         {/* Recent contributions component */}
         <RecentContributions contributions={recentContributions} />
