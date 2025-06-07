@@ -1,5 +1,6 @@
 "use client"
 
+import { CURRENCY_SYMBOLS } from '@/constants';
 import { ContributionWithRelations } from '@/types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -39,7 +40,7 @@ export default function AmbaganCard({ contribution }: AmbaganProps) {
 
           <div className="flex flex-col">
             <p>Total Amount</p>
-            <p>₱ {totalAmount}</p>
+            <p>{totalAmount} {contribution.currency}</p>
           </div>
         </div>
 

@@ -32,6 +32,7 @@ export async function POST(
           name: body.name,
           ownerId: user.id,
           groupId: groupId,
+          currency: body.currency,
           ContributionItem: {
             create: body.contributionItems.map((item) => ({
               name: item.name,
@@ -40,7 +41,7 @@ export async function POST(
                 createMany: {
                   data: item.contributors.map((contributor) => ({
                     userId: contributor.id,
-                    amount: new Decimal(contributor.amount),
+                    amount: contributor.amount,
                   })),
                 },
               },

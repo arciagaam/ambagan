@@ -31,7 +31,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${redHatDisplay.className} ${redHatDisplay.variable} antialiased font-red-hat-display tracking-tighter`}>
+      <body className={`${redHatDisplay.className} ${redHatDisplay.variable} antialiased font-red-hat-display tracking-tighter relative`}>
         <main>
           {user ? home : children}
           <Toaster />

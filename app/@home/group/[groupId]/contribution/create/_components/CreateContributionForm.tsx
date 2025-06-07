@@ -16,6 +16,8 @@ import { asyncFetch } from '@/lib/asyncFetch'
 import toast from 'react-hot-toast'
 import { APIError } from '@/lib/apiErrorHandler'
 import { Contribution } from '@prisma/client'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { CURRENCIES } from '@/constants'
 
 type CreateContributionFormProps = {
     members: Member[]
@@ -33,6 +35,7 @@ export default function CreateContributionForm({
         resolver: zodResolver(CreateContributionSchema),
         defaultValues: {
             name: '',
+            currency: 'PHP',
             contributionItems: [{
                 name: '',
                 amount: 0,
@@ -42,10 +45,11 @@ export default function CreateContributionForm({
     })
 
     const onSubmit = async (values: z.infer<typeof CreateContributionSchema>) => {
+
         try {
             const res = await asyncFetch.post(`/api/group/${groupId}/contribution`, values) as { data: Contribution }
-            // router.push(`/group/${res.data.id}`)
-            // router.refresh()
+            router.push(`/group/${groupId}/contribution/${res.data.id}`)
+            router.refresh()
         } catch (error: unknown) {
             toast.error((error as APIError).message)
         }
@@ -54,19 +58,51 @@ export default function CreateContributionForm({
     return (
         <Form {...createContributionForm}>
             <form onSubmit={createContributionForm.handleSubmit(onSubmit)} className='flex flex-col gap-5 p-4'>
-                <FormField
-                    control={createContributionForm.control}
-                    name="name"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Name</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+
+                <div className="flex gap-4">
+                    <FormField
+                        control={createContributionForm.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Name</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={createContributionForm.control}
+                        name="currency"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Currency</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a currency" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {
+                                            CURRENCIES.map(currency => (
+                                                <SelectItem key={currency.code} value={currency.code}>
+                                                    {currency.name}
+                                                </SelectItem>
+                                            ))
+                                        }
+                                    </SelectContent>
+                                </Select>
+
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
                 <p>{formatDateHumanReadable(new Date())}</p>
                 <ContributionsItemsList members={members} />
                 <Button className='w-full'>Create Ambagan</Button>

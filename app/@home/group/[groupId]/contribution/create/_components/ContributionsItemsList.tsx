@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { ContributorsSelect } from './ContributorsSelect'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
 import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { CURRENCY_SYMBOLS } from '@/constants'
 
 type ContributionsItemsListProps = {
     members: Member[]
@@ -61,7 +61,7 @@ export default function ContributionsItemsList({
                                                 <div>
                                                     <h3 className="font-medium">{contributionItem.name || 'Unnamed Ambagan'}</h3>
                                                     <p className="text-sm text-muted-foreground">
-                                                        Amount: ₱{contributionItem.amount || 0}
+                                                        Amount: {contributionItem.amount || 0} {formValue.currency}
                                                     </p>
                                                     <p className="text-sm text-muted-foreground">
                                                         Contributors: {contributionItem.contributors?.length || 0}
@@ -83,6 +83,12 @@ export default function ContributionsItemsList({
                                     </Card>
                                 </DrawerTrigger>
                                 <DrawerContent>
+
+
+                                    <DrawerTitle className='sr-only'>
+                                        {contributionItem.name || 'Unnamed Ambagan'}
+                                    </DrawerTitle>
+
                                     <DrawerHeader>
                                         <FormField
                                             control={form.control}
@@ -97,6 +103,8 @@ export default function ContributionsItemsList({
                                                 </FormItem>
                                             )}
                                         />
+
+                
                                     </DrawerHeader>
                                     <div className="p-4 space-y-4">
 
@@ -117,7 +125,7 @@ export default function ContributionsItemsList({
                                             }}
                                         />
 
-                                        <hr className='my-10'/>
+                                        <hr className='my-10' />
 
                                         <Controller
                                             control={form.control}
@@ -186,9 +194,9 @@ export default function ContributionsItemsList({
                     variant={"outline"}
                     onClick={handleAppend}
                 >
-                    Add Ambagan
+                    Add Item
                 </Button>
             </div>
-        </div>
+        </div >
     )
 }

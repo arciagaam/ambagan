@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { ContributionItemWithRelations } from '@/types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { CURRENCY_SYMBOLS } from '@/constants'
 
 
 type ContributionCardProps = {
@@ -31,14 +32,14 @@ export default function ContributionCard({ contributionItem, toPay }: Contributi
           </div>
 
           <div className="flex flex-col items-end ml-auto">
-            <p className="font-medium">₱ {Number(contributionItem.amount).toLocaleString()}</p>
+            <p className="font-medium">{Number(contributionItem.amount).toLocaleString()} {contributionItem.Contribution.currency}</p>
             <Badge>Status</Badge>
           </div>
         </div>
 
         <div className="flex gap-1">
           <div className="w-full h-full">
-            <Badge className='w-full h-full py-2' variant="outline">Pay ₱ {toPay.toLocaleString()}</Badge>
+            <Badge className='w-full h-full py-2' variant="outline">Pay {toPay.toLocaleString()} {contributionItem.Contribution.currency}</Badge>
           </div>
 
           <Link className='w-full' href={`/group/${contributionItem.Contribution.Group.id}/contribution/${contributionItem.Contribution.id}`} >
