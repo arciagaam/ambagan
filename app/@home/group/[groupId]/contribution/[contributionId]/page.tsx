@@ -2,7 +2,7 @@ import React from 'react'
 import prisma from '@/prisma/prisma'
 import { notFound } from 'next/navigation'
 import { getAuthUser } from '@/utils/auth'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 
 type PageProps = {
   params: Promise<{
@@ -39,20 +39,18 @@ export default async function Page({ params }: PageProps) {
 
   if (!contribution) return notFound()
 
-  console.log(contribution)
-
   const totalAmount = contribution.ContributionItem.reduce((acc, item) => acc + Number(item.amount), 0)
   const totalPayable = contribution.ContributionItem.filter((contributionItem) => contributionItem.Contributor.some((contributor) => contributor.userId === user?.id)).reduce((acc, item) => acc + Number(item.amount), 0)
 
   return (
     <div className="flex flex-col p-4 gap-10">
-      <Card className='rounded-2xl bg-primary border-0'>
-        <CardContent className='p-4 text-white gap-5 flex flex-col'>
+      <Card className='rounded-2xl bg-primary border-0 relative overflow-clip'>
+        <CardContent className='p-4 text-white gap-5 flex flex-col z-10'>
           <h1 className='text-xl font-bold'>{contribution.name}</h1>
 
           <div className="flex gap-10">
             <div className="flex flex-col">
-              <p className='text-sm'>Remaining Total</p>
+              <p className='text-sm'>Grand Total</p>
               <p className='font-bold'>₱ {totalAmount.toLocaleString()}</p>
             </div>
 
@@ -67,6 +65,10 @@ export default async function Page({ params }: PageProps) {
             <p>{contribution.createdAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}, {contribution.createdAt.toLocaleDateString('en-US', { weekday: 'long' })}</p>
           </div>
         </CardContent>
+
+        <div className="absolute -bottom-14 -right-2 rounded-full  text-[15rem] aspect-square flex items-center justify-center opacity-10 leading-none">
+          🍽️
+        </div>
       </Card>
 
 

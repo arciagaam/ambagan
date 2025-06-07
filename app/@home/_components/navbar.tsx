@@ -25,6 +25,13 @@ export default function Navbar() {
         }
     }
 
+    const getBackHref = () => {
+        if (pathname.startsWith('/group/') && pathname.includes('/manage')) {
+            return `/group/${pathname.split('/')[2]}`
+        }
+        return '..'
+    }
+
     return (
 
         <>
@@ -36,7 +43,7 @@ export default function Navbar() {
 
                 {
                     pathname !== '/' &&
-                    <Link href={'..'} rel='path'>
+                    <Link href={getBackHref()} rel='path'>
                         <Button variant="outline" className="rounded-full aspect-square size-12 border shadow-none border-border ">
                             <ArrowLeft />
                         </Button>

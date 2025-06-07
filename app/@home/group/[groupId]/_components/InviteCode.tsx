@@ -12,14 +12,15 @@ export default function InviteCode({inviteCode}: {inviteCode: string}) {
         navigator.clipboard.writeText('AljcvaS8@UH') //change to db group invite code
         toast('Invite code copied to clipboard.')
     }
+
     return (
-        <div className="flex items-start p-6 bg-white shadow">
+        <div className="flex items-start">
 
             <div className="flex flex-col gap-1 w-full">
                 <Label>Invite Code</Label>
                 <p className='font-bold'>{inviteCode}</p>
             </div>
-            <Button variant={'outline'} onClick={copyInviteLink} className='w-fit flex items-center gap-2'>
+            <Button variant={'ghost'} onClick={copyInviteLink} className='w-fit flex items-center gap-2'>
                 <FaCopy/>
                 <span>Copy</span>
             </Button>

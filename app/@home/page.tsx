@@ -1,6 +1,4 @@
 import React from 'react'
-import GroupsGrid from './_components/GroupsGrid'
-import NoGroups from './_components/NoGroups'
 import StatsSection from './_components/StatsSection'
 import QuickActions from './_components/QuickActions'
 import RecentContributions from './_components/RecentContributions'

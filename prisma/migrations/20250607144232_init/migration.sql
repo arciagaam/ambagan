@@ -48,7 +48,7 @@ CREATE TABLE "Contribution" (
 CREATE TABLE "ContributionItem" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "amount" MONEY NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "contributionId" INTEGER NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE "ContributionItem" (
 CREATE TABLE "Contributor" (
     "contributionItemId" INTEGER NOT NULL,
     "userId" TEXT NOT NULL,
-    "amount" MONEY NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL,
 
     CONSTRAINT "Contributor_pkey" PRIMARY KEY ("userId","contributionItemId")
 );
